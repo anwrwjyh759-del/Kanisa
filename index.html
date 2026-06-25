@@ -19,7 +19,7 @@
       radial-gradient(circle at 80% 50%, rgba(255, 0, 170, 0.1) 0%, transparent 50%);
     overflow-x: hidden;
   }
- .container {
+.container {
     width: 95%;
     max-width: 650px;
     background: rgba(15, 0, 30, 0.95);
@@ -38,7 +38,7 @@
     font-weight: 900;
     letter-spacing: 2px;
   }
- .score-box {
+.score-box {
     background: linear-gradient(135deg, #1a0033, #2a0055);
     border: 2px solid #ff00aa;
     padding: 12px;
@@ -49,7 +49,7 @@
     box-shadow: 0 0 20px #ff00aa inset;
     font-weight: 700;
   }
- .timer {
+.timer {
     font-size: 1.8em;
     color: #ff0066;
     margin: 20px 0;
@@ -57,14 +57,14 @@
     font-weight: 900;
     display: none;
   }
- .timer.warning {
+.timer.warning {
     color: #ffaa00;
     animation: blink 0.5s infinite;
   }
   @keyframes blink {
     50% { opacity: 0.3; }
   }
- .question {
+.question {
     font-size: 1.5em;
     margin: 30px 0;
     color: #fff;
@@ -72,7 +72,7 @@
     line-height: 1.6;
     font-weight: 700;
   }
- .options button {
+.options button {
     width: 100%;
     background: linear-gradient(135deg, #1a0033, #2a0055);
     border: 2px solid #ff00aa;
@@ -85,26 +85,26 @@
     transition: 0.3s;
     font-weight: 600;
   }
- .options button:hover:not(:disabled) {
+.options button:hover:not(:disabled) {
     background: linear-gradient(135deg, #ff00ff, #ff00aa);
     color: #050010;
     box-shadow: 0 0 25px #ff00ff;
     transform: translateY(-3px);
   }
- .options button:disabled { cursor: not-allowed; }
- .options button.correct {
+.options button:disabled { cursor: not-allowed; }
+.options button.correct {
     background: linear-gradient(135deg, #00ff88, #00cc66);
     color: #000;
     border-color: #00ff88;
     box-shadow: 0 0 25px #00ff88;
   }
- .options button.wrong {
+.options button.wrong {
     background: linear-gradient(135deg, #ff0044, #cc0033);
     color: #fff;
     border-color: #ff0044;
     box-shadow: 0 0 25px #ff0044;
   }
- .start-btn {
+.start-btn {
     background: linear-gradient(135deg, #ff00ff, #ff00aa);
     color: #050010;
     border: none;
@@ -117,12 +117,12 @@
     font-weight: 900;
     transition: 0.3s;
   }
- .start-btn:hover {
+.start-btn:hover {
     box-shadow: 0 0 50px #ff00ff;
     transform: scale(1.05);
   }
- .hidden { display: none; }
- .result {
+.hidden { display: none; }
+.result {
     font-size: 1.7em;
     color: #ff88ff;
     margin-top: 25px;
@@ -134,8 +134,8 @@
     50% { box-shadow: 0 0 60px #ff0066, 0 0 120px #ff0044; }
     100% { box-shadow: 0 0 40px #ff00ff, 0 0 80px #ff00aa; }
   }
- .infinity-mode { animation: pulse 0.8s infinite; border-color: #ff0066; }
- .q-number {
+.infinity-mode { animation: pulse 0.8s infinite; border-color: #ff0066; }
+.q-number {
     color: #ff00aa;
     font-size: 0.9em;
     margin-bottom: 10px;
@@ -147,7 +147,7 @@
   <h1>INFINITY GATE<br>بوابة اللانهاية</h1>
 
   <div class="score-box hidden" id="score-box">السكور: <span id="score">0</span> / 20</div>
-  <div class="timer hidden" id="timer">⏱ 30</div>
+  <div class="timer" id="timer">⏱ 30</div>
   <div class="q-number hidden" id="q-number"></div>
   <div class="question hidden" id="question"></div>
   <div class="options hidden" id="options"></div>
@@ -157,18 +157,17 @@
       تحدي بوابة اللانهاية<br>
       20 سؤال مستوى صعب<br>
       10 أسئلة كنسية عميقة + 10 معلومات عامة تقيلة<br>
-      السؤال 20: سؤال اللانهاية ⏱ 30 ثانية فقط!
+      كل سؤال 30 ثانية! والسؤال 20 سؤال اللانهاية
     </p>
     <button class="start-btn" onclick="startQuiz()">ابدأ التحدي</button>
   </div>
 
   <div class="result hidden" id="result"></div>
 </div>
-
 <script>
 const questions = [
   // 10 أسئلة كنسية - أصعب
-  {q: "مين قال 'ليس بالخبز وحده يحيا الإنسان' ومين رد عليه بنفس الآية بعدين؟", a: ["يسوع - الشيطان", "موسى - فرعون", "إيليا - أخاب", "بطرس - حنانيا"], correct: 0},
+  {q: "مين قال 'ليس بالخبز وحده يحيا الإنسان؟", a: ["يسوع", "موسى - فرعون", "إيليا - أخاب", "بطرس - حنانيا"], correct: 0},
   {q: "سفر الرؤيا اتكتب في أي جزيرة؟", a: ["كريت", "قبرص", "بطمس", "مالطا"], correct: 2},
   {q: "مين من الرسل كان 'ابن قانا' أو 'القانوي'؟", a: ["متى", "سمعان الغيور", "يعقوب الصغير", "برثولماوس"], correct: 1},
   {q: "المجمع المسكوني الأول في نيقية سنة 325 حرم مين؟", a: ["أوريجانوس", "أريوس", "نسطور", "مقدونيوس"], correct: 1},
@@ -204,6 +203,7 @@ function startQuiz() {
   document.getElementById('q-number').classList.remove('hidden');
   document.getElementById('question').classList.remove('hidden');
   document.getElementById('options').classList.remove('hidden');
+  document.getElementById('timer').style.display = 'block'; // <-- هنا السر: بنظهر التايمر
   showQuestion();
 }
 
@@ -218,14 +218,14 @@ function showQuestion() {
   const optionsDiv = document.getElementById('options');
   optionsDiv.innerHTML = '';
 
+  // السؤال الأخير بس ياخد النيون الأحمر
   if(q.infinity) {
-    document.getElementById('timer').classList.remove('hidden');
     document.getElementById('quiz-box').classList.add('infinity-mode');
-    startTimer();
   } else {
-    document.getElementById('timer').classList.add('hidden');
     document.getElementById('quiz-box').classList.remove('infinity-mode');
   }
+
+  startTimer();
 
   q.a.forEach((opt, i) => {
     const btn = document.createElement('button');
@@ -238,6 +238,8 @@ function showQuestion() {
 function startTimer() {
   const timerEl = document.getElementById('timer');
   timerEl.textContent = `⏱ ${timeLeft}`;
+  timerEl.classList.remove('warning');
+
   timer = setInterval(() => {
     timeLeft--;
     timerEl.textContent = `⏱ ${timeLeft}`;
@@ -278,18 +280,18 @@ function nextQuestion() {
 }
 
 function showResult() {
+  clearInterval(timer);
   document.getElementById('q-number').classList.add('hidden');
   document.getElementById('question').classList.add('hidden');
   document.getElementById('options').classList.add('hidden');
-  document.getElementById('timer').classList.add('hidden');
+  document.getElementById('timer').style.display = 'none';
   document.getElementById('quiz-box').classList.remove('infinity-mode');
 
   let msg = `انتهى التحدي! سكورك النهائي: ${score}/20<br>`;
   if(score >= 18) msg += "🔥 أسطورة بوابة اللانهاية! محدش قدك";
   else if(score >= 15) msg += "⚡ وحش! قربت تختم البوابة";
   else if(score >= 12) msg += "💪 جامد! بس لسه قدامك";
-  else if(score >= 8) msg += "👍 مش بطال، حاول تاني";
-  else msg += "💀 البوابة قفلت في وشك، جرب تاني";
+  else msg += "💀 البوابة قفلت";
 
   document.getElementById('result').innerHTML = msg;
   document.getElementById('result').classList.remove('hidden');

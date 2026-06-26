@@ -164,138 +164,148 @@
 
   <div class="result hidden" id="result"></div>
 </div>
-<script>
-const questions = [
-  // 10 أسئلة كنسية - أصعب
-  {q: "مين قال 'ليس بالخبز وحده يحيا الإنسان؟", a: ["يسوع", "موسى - فرعون", "إيليا - أخاب", "بطرس - حنانيا"], correct: 0},
-  {q: "سفر الرؤيا اتكتب في أي جزيرة؟", a: ["كريت", "قبرص", "بطمس", "مالطا"], correct: 2},
-  {q: "مين من الرسل كان 'ابن قانا' أو 'القانوي'؟", a: ["متى", "سمعان الغيور", "يعقوب الصغير", "برثولماوس"], correct: 1},
-  {q: "المجمع المسكوني الأول في نيقية سنة 325 حرم مين؟", a: ["أوريجانوس", "أريوس", "نسطور", "مقدونيوس"], correct: 1},
-  {q: "مين اللي قال 'ها أنا معكم كل الأيام إلى انقضاء الدهر'؟", a: ["الملاك جبرائيل", "يسوع المسيح", "القديس بطرس", "القديس بولس"], correct: 1},
-  {q: "كم مرة صامها السيد المسيح في الأناجيل؟ مرتين، امتى؟", a: ["مرة واحدة 40 يوم", "مرتين: الميلاد والعماد", "مرتين: بعد الميلاد وقبل الخدمة", "3 مرات"], correct: 2},
-  {q: "القديس مرقس كتب إنجيله لمين؟", a: ["اليهود", "الرومان", "اليونانيين", "المصريين"], correct: 1},
-  {q: "مين اللي قال 'يا أورشليم يا أورشليم يا قاتلة الأنبياء'؟", a: ["إرميا", "إشعياء", "يسوع", "يوحنا المعمدان"], correct: 2},
-  {q: "الليتورجيا الغريغورية بتتصلى امتى في الكنيسة القبطية؟", a: ["الأحد", "الأربعاء والجمعة", "الصوم الكبير", "الأعياد السيدية"], correct: 2},
-  {q: "مين أول شهيد في المسيحية؟", a: ["يعقوب أخو الرب", "استفانوس", "بولس", "بطرس"], correct: 1},
 
-  // 10 معلومات عامة - أصعب
-  {q: "أي عنصر لو أكلته بكميات كبيرة يخليك تتوهج في الضلمة؟", a: ["اليورانيوم", "الفوسفور", "الراديوم", "السيزيوم"], correct: 1},
-  {q: "مين العالم اللي قال 'الله لا يلعب بالنرد'؟", a: ["نيوتن", "آينشتاين", "هوكينج", "بوهر"], correct: 1},
-  {q: "أقصر حرب في التاريخ كانت بين مين ومين وطولها كام؟", a: ["بريطانيا وزنجبار - 38 دقيقة", "فرنسا وألمانيا - يومين", "مصر وإسرائيل - 6 ساعات", "أمريكا وكندا - ساعة"], correct: 0},
-  {q: "العدد الأولي اللي بعد 997 كام؟", a: ["1001", "1007", "1009", "1013"], correct: 2},
-  {q: "مين اخترع الواي فاي؟", a:["ماركوني", "فريق من CSIRO أستراليا", "تسلا", "جراهام بيل"], correct: 1},
-  {q: "أعمق نقطة في المحيط اسمها ايه وعمقها كام؟", a: ["خندق ماريانا - 11كم", "خندق بورتوريكو - 8كم", "خندق اليابان - 10كم", "خندق سوندا - 7كم"], correct: 0},
-  {q: "لغة الباسك Basque بتتكلم فين ومش من عيلة أي لغة؟", a: ["إسبانيا/فرنسا - لغة معزولة", "روسيا - سلافية", "الهند - هندية", "أفريقيا - نيلية"], correct: 0},
-  {q: "مين رسم 'ليلة النجوم' The Starry Night؟", a: ["دافنشي", "فان جوخ", "مونيه", "دالي"], correct: 1},
-  {q: "سنة 1752 اتشال كام يوم من التقويم في بريطانيا؟", a: ["5 أيام", "11 يوم", "15 يوم", "مفيش أيام اتشالت"], correct: 1},
-  // سؤال اللانهاية - الأخير
-  {q: "سؤال اللانهاية: أنا الرقم اللي لو ضربتني في نفسي وطرحت مني نفسي، هتطلع صفر. مين أنا؟", a: ["0", "1", "2", "10"], correct: 1, infinity: true}
-];
+<script type="module"> 
+  // 1. Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-let currentQ = 0;
-let score = 0;
-let timer;
-let timeLeft = 30;
+  const firebaseConfig = {
+    apiKey: "AIzaSyAZptPE5cEBfyVllihY-vkFMdBFAxa_5tA",
+    authDomain: "my-hope-2fa4f.firebaseapp.com",
+    databaseURL: "https://my-hope-2fa4f-default-rtdb.firebaseio.com",
+    projectId: "my-hope-2fa4f",
+    storageBucket: "my-hope-2fa4f.firebasestorage.app",
+    messagingSenderId: "288521267998",
+    appId: "1:288521267998:web:278e2d42f8fa102427770f",
+    measurementId: "G-52W3GEQZNE"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const playerId = "player_" + Math.random().toString(36).substr(2, 9); // ID عشوائي لكل لاعب
 
-function startQuiz() {
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('score-box').classList.remove('hidden');
-  document.getElementById('q-number').classList.remove('hidden');
-  document.getElementById('question').classList.remove('hidden');
-  document.getElementById('options').classList.remove('hidden');
-  document.getElementById('timer').style.display = 'block'; // <-- هنا السر: بنظهر التايمر
-  showQuestion();
-}
+  // 2. الأسئلة بتاعتك
+  const questions = [
+    {q: "مين قال 'ليس بالخبز وحده يحيا الإنسان؟", a: ["يسوع", "موسى - فرعون", "إيليا - أخاب", "بطرس - حنانيا"], correct: 0},
+    {q: "سفر الرؤيا اتكتب في أي جزيرة؟", a: ["كريت", "قبرص", "بطمس", "مالطا"], correct: 2},
+    {q: "مين من الرسل كان 'ابن قانا' أو 'القانوي'؟", a: ["متى", "سمعان الغيور", "يعقوب الصغير", "برثولماوس"], correct: 1},
+    {q: "المجمع المسكوني الأول في نيقية سنة 325 حرم مين؟", a: ["أوريجانوس", "أريوس", "نسطور", "مقدونيوس"], correct: 1},
+    {q: "مين اللي قال 'ها أنا معكم كل الأيام إلى انقضاء الدهر'؟", a: ["الملاك جبرائيل", "يسوع المسيح", "القديس بطرس", "القديس بولس"], correct: 1},
+    {q: "كم مرة صامها السيد المسيح في الأناجيل؟ مرتين، امتى؟", a: ["مرة واحدة 40 يوم", "مرتين: الميلاد والعماد", "مرتين: بعد الميلاد وقبل الخدمة", "3 مرات"], correct: 2},
+    {q: "القديس مرقس كتب إنجيله لمين؟", a: ["اليهود", "الرومان", "اليونانيين", "المصريين"], correct: 1},
+    {q: "مين اللي قال 'يا أورشليم يا أورشليم يا قاتلة الأنبياء'؟", a: ["إرميا", "إشعياء", "يسوع", "يوحنا المعمدان"], correct: 2},
+    {q: "الليتورجيا الغريغورية بتتصلى امتى في الكنيسة القبطية؟", a: ["الأحد", "الأربعاء والجمعة", "الصوم الكبير", "الأعياد السيدية"], correct: 2},
+    {q: "مين أول شهيد في المسيحية؟", a: ["يعقوب أخو الرب", "استفانوس", "بولس", "بطرس"], correct: 1},
+    {q: "أي عنصر لو أكلته بكميات كبيرة يخليك تتوهج في الضلمة؟", a: ["اليورانيوم", "الفوسفور", "الراديوم", "السيزيوم"], correct: 1},
+    {q: "مين العالم اللي قال 'الله لا يلعب بالنرد'؟", a: ["نيوتن", "آينشتاين", "هوكينج", "بوهر"], correct: 1},
+    {q: "أقصر حرب في التاريخ كانت بين مين ومين وطولها كام؟", a: ["بريطانيا وزنجبار - 38 دقيقة", "فرنسا وألمانيا - يومين", "مصر وإسرائيل - 6 ساعات", "أمريكا وكندا - ساعة"], correct: 0},
+    {q: "العدد الأولي اللي بعد 997 كام؟", a: ["1001", "1007", "1009", "1013"], correct: 2},
+    {q: "مين اخترع الواي فاي؟", a:["ماركوني", "فريق من CSIRO أستراليا", "تسلا", "جراهام بيل"], correct: 1},
+    {q: "أعمق نقطة في المحيط اسمها ايه وعمقها كام؟", a: ["خندق ماريانا - 11كم", "خندق بورتوريكو - 8كم", "خندق اليابان - 10كم", "خندق سوندا - 7كم"], correct: 0},
+    {q: "لغة الباسك Basque بتتكلم فين ومش من عيلة أي لغة؟", a: ["إسبانيا/فرنسا - لغة معزولة", "روسيا - سلافية", "الهند - هندية", "أفريقيا - نيلية"], correct: 0},
+    {q: "مين رسم 'ليلة النجوم' The Starry Night؟", a: ["دافنشي", "فان جوخ", "مونيه", "دالي"], correct: 1},
+    {q: "سنة 1752 اتشال كام يوم من التقويم في بريطانيا؟", a: ["5 أيام", "11 يوم", "15 يوم", "مفيش أيام اتشالت"], correct: 1},
+    {q: "سؤال اللانهاية: أنا الرقم اللي لو ضربتني في نفسي وطرحت مني نفسي، هتطلع صفر. مين أنا؟", a: ["0", "1", "2", "10"], correct: 1, infinity: true}
+  ];
 
-function showQuestion() {
-  clearInterval(timer);
-  timeLeft = 30;
+  let currentQ = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 30;
 
-  const q = questions[currentQ];
-  document.getElementById('q-number').textContent = `السؤال ${currentQ+1} من 20`;
-  document.getElementById('question').textContent = q.q;
-
-  const optionsDiv = document.getElementById('options');
-  optionsDiv.innerHTML = '';
-
-  // السؤال الأخير بس ياخد النيون الأحمر
-  if(q.infinity) {
-    document.getElementById('quiz-box').classList.add('infinity-mode');
-  } else {
-    document.getElementById('quiz-box').classList.remove('infinity-mode');
-  }
-
-  startTimer();
-
-  q.a.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(i, btn);
-    optionsDiv.appendChild(btn);
-  });
-}
-
-function startTimer() {
-  const timerEl = document.getElementById('timer');
-  timerEl.textContent = `⏱ ${timeLeft}`;
-  timerEl.classList.remove('warning');
-
-  timer = setInterval(() => {
-    timeLeft--;
-    timerEl.textContent = `⏱ ${timeLeft}`;
-    if(timeLeft <= 10) timerEl.classList.add('warning');
-    if(timeLeft <= 0) {
-      clearInterval(timer);
-      nextQuestion(false);
-    }
-  }, 1000);
-}
-
-function checkAnswer(selected, btn) {
-  clearInterval(timer);
-  const correct = questions[currentQ].correct;
-  const buttons = document.querySelectorAll('.options button');
-
-  buttons.forEach((b, i) => {
-    b.disabled = true;
-    if(i === correct) b.classList.add('correct');
-    else if(i === selected) b.classList.add('wrong');
-  });
-
-  if(selected === correct) {
-    score++;
-    document.getElementById('score').textContent = score;
-  }
-
-  setTimeout(nextQuestion, 1800);
-}
-
-function nextQuestion() {
-  currentQ++;
-  if(currentQ < questions.length) {
+  window.startQuiz = function() { // لازم window عشان onclick
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('score-box').classList.remove('hidden');
+    document.getElementById('q-number').classList.remove('hidden');
+    document.getElementById('question').classList.remove('hidden');
+    document.getElementById('options').classList.remove('hidden');
+    document.getElementById('timer').style.display = 'block';
     showQuestion();
-  } else {
-    showResult();
   }
-}
 
-function showResult() {
-  clearInterval(timer);
-  document.getElementById('q-number').classList.add('hidden');
-  document.getElementById('question').classList.add('hidden');
-  document.getElementById('options').classList.add('hidden');
-  document.getElementById('timer').style.display = 'none';
-  document.getElementById('quiz-box').classList.remove('infinity-mode');
+  function showQuestion() {
+    clearInterval(timer);
+    timeLeft = 30;
+    const q = questions[currentQ];
+    document.getElementById('q-number').textContent = `السؤال ${currentQ+1} من 20`;
+    document.getElementById('question').textContent = q.q;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    if(q.infinity) {
+      document.getElementById('quiz-box').classList.add('infinity-mode');
+    } else {
+      document.getElementById('quiz-box').classList.remove('infinity-mode');
+    }
+    startTimer();
+    q.a.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.onclick = () => checkAnswer(i, btn);
+      optionsDiv.appendChild(btn);
+    });
+  }
 
-  let msg = `انتهى التحدي! سكورك النهائي: ${score}/20<br>`;
-  if(score >= 18) msg += "🔥 أسطورة بوابة اللانهاية! محدش قدك";
-  else if(score >= 15) msg += "⚡ وحش! قربت تختم البوابة";
-  else if(score >= 12) msg += "💪 جامد! بس لسه قدامك";
-  else msg += "💀 البوابة قفلت";
+  function startTimer() {
+    const timerEl = document.getElementById('timer');
+    timerEl.textContent = `⏱ ${timeLeft}`;
+    timerEl.classList.remove('warning');
+    timer = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `⏱ ${timeLeft}`;
+      if(timeLeft <= 10) timerEl.classList.add('warning');
+      if(timeLeft <= 0) {
+        clearInterval(timer);
+        nextQuestion(false);
+      }
+    }, 1000);
+  }
 
-  document.getElementById('result').innerHTML = msg;
-  document.getElementById('result').classList.remove('hidden');
-}
-</script>
+  function checkAnswer(selected, btn) {
+    clearInterval(timer);
+    const correct = questions[currentQ].correct;
+    const buttons = document.querySelectorAll('.options button');
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if(i === correct) b.classList.add('correct');
+      else if(i === selected) b.classList.add('wrong');
+    });
+    if(selected === correct) {
+      score++;
+      document.getElementById('score').textContent = score;
+      saveScore(); // بنحفظ النقطة في Firebase
+    }
+    setTimeout(nextQuestion, 1800);
+  }
+
+  function saveScore() {
+    const scoreRef = ref(db, `infinity_gate/${playerId}/score`);
+    runTransaction(scoreRef, (current) => score); // بنبعت الاسكور كله
+  }
+
+  function nextQuestion() {
+    currentQ++;
+    if(currentQ < questions.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    clearInterval(timer);
+    document.getElementById('q-number').classList.add('hidden');
+    document.getElementById('question').classList.add('hidden');
+    document.getElementById('options').classList.add('hidden');
+    document.getElementById('timer').style.display = 'none';
+    document.getElementById('quiz-box').classList.remove('infinity-mode');
+    let msg = `انتهى التحدي! سكورك النهائي: ${score}/20<br>`;
+    if(score >= 18) msg += "🔥 أسطورة بوابة اللانهاية! محدش قدك";
+    else if(score >= 15) msg += "⚡ وحش! قربت تختم البوابة";
+    else if(score >= 12) msg += "💪 جامد! بس لسه قدامك";
+    else msg += "💀 البوابة قفلت";
+    document.getElementById('result').innerHTML = msg;
+    document.getElementById('result').classList.remove('hidden');
+  }
+</script> <!-- اقفلها مرة واحدة بس هنا -->
 </body>
 </html>

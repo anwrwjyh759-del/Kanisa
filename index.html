@@ -3,553 +3,541 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مسابقة كنيسه القديس مار مرقس الرسول و العذراء مريم خدمه ثانوي</title>
-
+<title>مسابقة الكنيسة</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap');
-  
-  :root {
-    --gold:#C9A84C; 
-    --gold-light:#E8CC7A;
-    --dark:#0D0A05; 
-    --dark2:#1A1408; 
-    --dark3:#241C0A;
-    --parchment:#F5EDD4; 
-    --text:#F0E8CC;
-    --cross:#8B2020; 
-    --cross-bright:#C0392B;
-  }
-  
-  *{margin:0;padding:0;box-sizing:border-box;}
-  
-  body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;
-    background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.08) 0%,transparent 60%),
-    radial-gradient(ellipse at 80% 80%,rgba(139,32,32,.1) 0%,transparent 60%);}
-  
-  .screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
-  
-  .cross-deco{font-size:3rem;color:var(--cross-bright);text-shadow:0 0 20px rgba(192,57,43,.5);margin-bottom:12px;animation:glow 2s ease-in-out infinite alternate;}
-  
-  @keyframes glow{from{text-shadow:0 0 10px rgba(192,57,43,.4);}to{text-shadow:0 0 30px rgba(192,57,43,.8),0 0 60px rgba(201,168,76,.3);}}
-  
-  .card{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:36px 32px;width:100%;max-width:480px;box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(201,168,76,.1);position:relative;overflow:hidden;}
-  
-  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-  
-  h1{font-family:'Amiri',serif;font-size:1.9rem;color:var(--gold);text-align:center;line-height:1.4;margin-bottom:8px;}
-  h2{font-family:'Amiri',serif;font-size:1.4rem;color:var(--gold-light);text-align:center;margin-bottom:20px;}
-  
-  .subtitle{text-align:center;color:rgba(240,232,204,.6);font-size:.88rem;margin-bottom:24px;line-height:1.6;}
-  
-  .divider{width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 22px;}
-  
-  .btn-primary{width:100%;padding:14px 24px;background:linear-gradient(135deg,var(--gold) 0%,#A07830 100%);color:var(--dark);border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;}
-  
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,.4);}
-  .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-  
-  .btn-secondary{background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:10px 20px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.9rem;cursor:pointer;transition:all .2s;width:100%;margin-top:12px;}
-  .btn-secondary:hover{background:rgba(201,168,76,.1);}
-  
-  label{display:block;margin-bottom:6px;font-size:.85rem;color:rgba(240,232,204,.65);}
-  .field-wrap{margin-bottom:14px;}
-  
-  input[type=text],input[type=tel],input[type=password]{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:1rem;text-align:right;outline:none;transition:border-color .2s;}
-  
-  input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
-  input::placeholder{color:rgba(240,232,204,.3);}
-  
-  .error-text{color:#f87171;font-size:.83rem;text-align:center;display:none;margin-top:8px;}
-  .success-text{color:#4ade80;font-size:.83rem;text-align:center;display:none;margin-top:8px;}
-  .password-hint{text-align:center;color:rgba(240,232,204,.4);font-size:.75rem;margin-top:12px;border-top:1px solid rgba(201,168,76,.1);padding-top:12px;}
-  
-  /* Quiz */
-  #screen-quiz{justify-content:flex-start;padding-top:20px;}
-  
-  .quiz-header{width:100%;max-width:600px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:0 4px;flex-wrap:wrap;gap:4px;}
-  
-  #user-name-display{color:var(--gold-light);font-size:.88rem;font-weight:700;}
-  .score-num{font-size:.88rem;color:var(--gold-light);font-weight:700;}
-  
-  .timer-wrap{display:flex;align-items:center;gap:8px;}
-  #timer-display{font-size:1.1rem;font-weight:700;color:var(--gold-light);min-width:60px;text-align:center;}
-  .timer-normal{color:#4ade80;}
-  .timer-warning{color:#fbbf24;animation:pulse 0.6s ease-in-out infinite alternate;}
-  .timer-timeout{color:#f87171;}
-  
-  @keyframes pulse{from{opacity:1;transform:scale(1);}to{opacity:0.4;transform:scale(0.95);}}
-  
-  #warning-text{color:#ff4444;font-size:1.2rem;font-weight:900;text-align:center;display:none;animation:flashWarning 0.4s ease-in-out infinite alternate;letter-spacing:2px;}
-  @keyframes flashWarning{from{opacity:1;text-shadow:0 0 10px rgba(255,68,68,.5);}to{opacity:0.2;text-shadow:0 0 40px rgba(255,68,68,.1);}}
-  
-  .progress-wrap{width:100%;max-width:600px;height:6px;background:rgba(255,255,255,.08);border-radius:99px;margin-bottom:10px;overflow:hidden;}
-  #progress-bar{height:100%;background:linear-gradient(90deg,var(--cross-bright),var(--gold));border-radius:99px;transition:width .4s ease;}
-  
-  .quiz-card{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:26px 22px;width:100%;max-width:600px;box-shadow:0 8px 40px rgba(0,0,0,.5);position:relative;}
-  
-  .quiz-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:16px 16px 0 0;}
-  
-  .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-  #q-number{font-size:.78rem;color:rgba(240,232,204,.5);}
-  
-  .q-category{font-size:.78rem;font-weight:700;padding:3px 12px;border-radius:99px;}
-  .cat-religious{background:rgba(139,32,32,.3);color:#ff9999;border:1px solid rgba(192,57,43,.4);}
-  .cat-general{background:rgba(201,168,76,.15);color:var(--gold-light);border:1px solid rgba(201,168,76,.3);}
-  
-  #q-text{font-family:'Amiri',serif;font-size:1.2rem;line-height:1.7;color:var(--parchment);margin-bottom:16px;}
-  
-  #options{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
-  
-  .option-btn{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:13px 18px;color:var(--text);font-family:'Cairo',sans-serif;font-size:.93rem;cursor:pointer;text-align:right;transition:all .15s;}
-  .option-btn:hover:not(.correct):not(.wrong){background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.5);transform:translateX(-3px);}
-  .option-btn.correct{background:rgba(74,222,128,.15);border-color:#4ade80;color:#4ade80;}
-  .option-btn.wrong{background:rgba(248,113,113,.15);border-color:#f87171;color:#f87171;}
-  
-  #feedback{font-size:.88rem;font-weight:700;min-height:20px;text-align:center;margin-bottom:8px;}
-  
-  /* Result */
-  .result-circle{width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:18px auto;background:radial-gradient(circle,rgba(201,168,76,.1),transparent);box-shadow:0 0 30px rgba(201,168,76,.2);}
-  .result-circle .big-score{font-family:'Amiri',serif;font-size:2.8rem;font-weight:700;color:var(--gold);line-height:1;}
-  .result-circle .out-of{font-size:.78rem;color:rgba(240,232,204,.5);}
-  .result-pct{font-size:1.4rem;font-weight:900;color:var(--gold-light);text-align:center;margin-bottom:8px;}
-  .result-msg{text-align:center;font-size:.93rem;line-height:1.6;color:rgba(240,232,204,.75);margin-bottom:18px;}
-  .lock-icon{font-size:2.5rem;margin-bottom:10px;}
-  
-  @media(max-width:480px){.card{padding:22px 16px;}.quiz-card{padding:18px 14px;}h1{font-size:1.55rem;}#q-text{font-size:1.05rem;}}
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap');
+
+:root{
+  --bg-deep:#0b1533;
+  --bg-panel:#131f4d;
+  --gold:#d4af37;
+  --gold-soft:#f0d78c;
+  --cream:#f4ecd8;
+  --gem-1:#7ec8ff;
+  --gem-2:#1c5fb8;
+  --gem-3:#0a2f6e;
+  --warn:#e63946;
+  --ok:#3fbf7f;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(212,175,55,0.08), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(30,90,180,0.15), transparent 45%),
+    var(--bg-deep);
+  color:var(--cream);
+  font-family:'Cairo', sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-x:hidden;
+}
+
+.stars{
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 80% 30%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 50% 70%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 30% 90%, rgba(255,255,255,0.3), transparent);
+  background-repeat:repeat;
+  background-size:400px 400px;
+}
+
+.card{
+  position:relative; z-index:1;
+  width:100%; max-width:520px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+  border:1px solid rgba(212,175,55,0.35);
+  border-radius:20px;
+  padding:36px 30px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  backdrop-filter:blur(6px);
+}
+
+.eyebrow{
+  text-align:center; color:var(--gold-soft); letter-spacing:3px;
+  font-size:12px; font-weight:700; text-transform:uppercase; margin-bottom:6px;
+  opacity:0.85;
+}
+
+h1{
+  font-family:'Amiri', serif;
+  text-align:center;
+  font-size:32px;
+  color:var(--gold-soft);
+  margin-bottom:6px;
+  text-shadow:0 0 20px rgba(212,175,55,0.3);
+}
+
+.subtitle{
+  text-align:center; color:rgba(244,236,216,0.65); font-size:14px; margin-bottom:28px;
+}
+
+/* ---- gate screen ---- */
+.gate-input{
+  width:100%;
+  padding:16px 18px;
+  border-radius:12px;
+  border:1px solid rgba(212,175,55,0.4);
+  background:rgba(255,255,255,0.05);
+  color:var(--cream);
+  font-family:'Cairo', sans-serif;
+  font-size:18px;
+  text-align:center;
+  letter-spacing:2px;
+  outline:none;
+  margin-bottom:14px;
+  transition:border-color .2s, box-shadow .2s;
+}
+.gate-input:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.15); }
+
+.btn{
+  width:100%;
+  padding:15px;
+  border-radius:12px;
+  border:none;
+  font-family:'Cairo', sans-serif;
+  font-weight:700;
+  font-size:17px;
+  cursor:pointer;
+  background:linear-gradient(135deg, var(--gold), #a97e1f);
+  color:#1a1207;
+  transition:transform .15s, box-shadow .15s;
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(212,175,55,0.3); }
+.btn:active{ transform:translateY(0); }
+.btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+.msg{ text-align:center; font-size:14px; min-height:20px; margin-top:12px; font-weight:700; }
+.msg.err{ color:var(--warn); }
+.msg.ok{ color:var(--ok); }
+
+/* ---- gem badge ---- */
+.gem{
+  width:22px; height:22px;
+  display:inline-block;
+  background:
+    linear-gradient(135deg, var(--gem-1) 0%, var(--gem-2) 55%, var(--gem-3) 100%);
+  clip-path:polygon(50% 0%, 85% 25%, 100% 65%, 50% 100%, 0% 65%, 15% 25%);
+  box-shadow:0 0 10px rgba(60,140,255,0.7);
+  vertical-align:middle;
+  position:relative;
+}
+.gem::after{
+  content:"";
+  position:absolute; top:15%; left:28%;
+  width:25%; height:18%;
+  background:rgba(255,255,255,0.8);
+  border-radius:50%;
+  filter:blur(1px);
+}
+.gem-big{ width:64px; height:64px; }
+
+.gem-counter{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(126,200,255,0.3);
+  border-radius:14px;
+  padding:12px 18px;
+  margin-bottom:24px;
+}
+.gem-counter .num{
+  font-family:'Amiri', serif;
+  font-size:24px;
+  font-weight:700;
+  color:var(--gem-1);
+  text-shadow:0 0 12px rgba(126,200,255,0.5);
+}
+
+/* ---- quiz screen ---- */
+.progress-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:13px; color:rgba(244,236,216,0.6); }
+.progress-bar{ height:6px; border-radius:4px; background:rgba(255,255,255,0.08); overflow:hidden; margin-bottom:22px; }
+.progress-fill{ height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-soft)); transition:width .3s; }
+
+.timer-wrap{ text-align:center; margin-bottom:18px; }
+.timer{
+  display:inline-block;
+  font-family:'Amiri', serif;
+  font-size:34px;
+  font-weight:700;
+  color:var(--cream);
+  transition:color .2s;
+}
+.timer.warning{ color:var(--warn); animation:pulse 0.6s infinite; }
+.warning-label{
+  display:block; color:var(--warn); font-weight:900; font-size:14px;
+  letter-spacing:2px; margin-top:4px; height:18px; opacity:0; transition:opacity .2s;
+}
+.warning-label.show{ opacity:1; animation:pulse 0.6s infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+.question-text{
+  font-family:'Amiri', serif;
+  font-size:22px;
+  text-align:center;
+  line-height:1.6;
+  margin-bottom:26px;
+  min-height:80px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.options{ display:flex; flex-direction:column; gap:12px; margin-bottom:10px; }
+.option{
+  padding:15px 18px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.03);
+  color:var(--cream);
+  font-family:'Cairo', sans-serif;
+  font-size:16px;
+  text-align:right;
+  cursor:pointer;
+  transition:all .15s;
+}
+.option:hover:not(:disabled){ border-color:var(--gold); background:rgba(212,175,55,0.08); }
+.option:disabled{ cursor:default; }
+.option.correct{ border-color:var(--ok); background:rgba(63,191,127,0.15); color:var(--ok); }
+.option.wrong{ border-color:var(--warn); background:rgba(230,57,70,0.15); color:var(--warn); }
+
+.feedback{ text-align:center; font-size:15px; font-weight:700; min-height:22px; margin:14px 0; }
+.feedback.gain{ color:var(--gem-1); }
+.feedback.miss{ color:var(--warn); }
+
+/* ---- results screen ---- */
+.result-icon{ display:flex; justify-content:center; margin-bottom:16px; }
+.result-title{ font-family:'Amiri', serif; text-align:center; font-size:26px; color:var(--gold-soft); margin-bottom:8px; }
+.result-sub{ text-align:center; color:rgba(244,236,216,0.7); font-size:14px; margin-bottom:26px; }
+.result-stats{ display:flex; justify-content:center; gap:26px; margin-bottom:28px; }
+.stat{ text-align:center; }
+.stat .n{ font-family:'Amiri', serif; font-size:28px; color:var(--gold-soft); font-weight:700; }
+.stat .l{ font-size:12px; color:rgba(244,236,216,0.55); margin-top:2px; }
+
+.hidden{ display:none !important; }
 </style>
 </head>
 <body>
+<div class="stars"></div>
 
-<!-- شاشة التسجيل -->
-<div class="screen" id="screen-login" style="display:flex;">
-  <div class="cross-deco">✝</div>
-  <div class="card">
-    <h1>مسابقة كنيسه مارمرقس الرسول و العذراء مريم</h1>
-    <p class="subtitle">أسئلة دينية ومعلومات عامة<br>سجّل اسمك ورقمك وابدأ!</p>
-    <div class="divider"></div>
-    <div class="field-wrap">
-      <label>اسمك الكامل</label>
-      <input type="text" id="input-name" placeholder="" maxlength="60">
-    </div>
-    <div class="field-wrap">
-      <label>رقم موبايلك</label>
-      <input type="tel" id="input-phone" placeholder="" maxlength="15">
-    </div>
-    <p class="error-text" id="reg-error"></p>
-    <button class="btn-primary" id="btn-register" onclick="doRegister()">دخول ✝️</button>
-    <p style="text-align:center;font-size:.75rem;color:rgba(240,232,204,.3);margin-top:14px;">البيانات بتتحفظ في متصفحك فقط</p>
-  </div>
+<!-- ============================================================= -->
+<!-- شاشة الدخول بالباسورد -->
+<!-- ============================================================= -->
+<div class="card" id="gateScreen">
+  <div class="eyebrow">مسابقه مدرسه الكتاب كنيسه السيده العذراء مريم و مارمرقس الرسول|RUSH&SMASH|</div>
+  <h1>✝️ اهلاً بيك</h1>
+  <p class="subtitle">اكتب الباسورد بتاعك عشان تدخل المسابقة</p>
+  <input type="text" id="passwordInput" class="gate-input" placeholder="الباسورد" autocomplete="off">
+  <button class="btn" id="enterBtn">ادخل المسابقة</button>
+  <div class="msg" id="gateMsg"></div>
 </div>
 
-<!-- شاشة كلمة المرور -->
-<div class="screen" id="screen-password">
-  <div class="lock-icon">🔒</div>
-  <div class="card">
-    <h2>أنت سبق شاركت!</h2>
-    <p class="subtitle">المسابقة بتتعمل مرة واحدة بس<br>عشان تشوف نتيجتك ادخل كلمة المرور</p>
-    <div class="divider"></div>
-    <div class="field-wrap">
-      <label>كلمة المرور</label>
-      <input type="password" id="input-password" placeholder="اكتب كلمة المرور...">
-    </div>
-    <p class="error-text" id="pw-error">❌ كلمة المرور غلط!</p>
-    <p class="success-text" id="pw-success">✅ كلمة المرور صحيحة! جاري عرض النتيجة...</p>
-    <button class="btn-primary" onclick="checkPassword()">دخول 🔓</button>
-    <div class="password-hint">🔑 كلمة المرور هي: <strong style="color:var(--gold);">250746</strong></div>
+<!-- ============================================================= -->
+<!-- شاشة الأسئلة -->
+<!-- ============================================================= -->
+<div class="card hidden" id="quizScreen">
+  <div class="gem-counter">
+    <span class="gem"></span>
+    <span class="num" id="gemCount">0</span>
+    <span style="font-size:13px; color:rgba(244,236,216,0.6);">جوهرة</span>
   </div>
+
+  <div class="progress-row">
+    <span id="qIndexLabel">سؤال 1 / 20</span>
+    <span id="qScoreLabel">5 جواهر للإجابة الصح</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+
+  <div class="timer-wrap">
+    <span class="timer" id="timerText">20</span>
+    <span class="warning-label" id="warningLabel">⚠️ الوقت قرب يخلص</span>
+  </div>
+
+  <div class="question-text" id="questionText">نص السؤال</div>
+  <div class="options" id="optionsWrap"></div>
+  <div class="feedback" id="feedback"></div>
 </div>
 
-<!-- شاشة المسابقة -->
-<div class="screen" id="screen-quiz">
-  <div class="quiz-header">
-    <span id="user-name-display"></span>
-    <div class="timer-wrap">
-      <span class="score-num">النقاط: <span id="live-score">0</span></span>
-      <span id="timer-display" class="timer-normal">⏱️ 20s</span>
-    </div>
-  </div>
-  <div id="warning-text">⚠️ WARNING ⚠️</div>
-  <div class="progress-wrap">
-    <div id="progress-bar" style="width:0%"></div>
-  </div>
-  <div class="quiz-card">
-    <div class="q-meta">
-      <span id="q-number"></span>
-      <span id="q-category" class="q-category"></span>
-    </div>
-    <p id="q-text"></p>
-    <div id="options"></div>
-    <div id="feedback"></div>
-    <button class="btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none;">التالي ⬅️</button>
-  </div>
-</div>
-
+<!-- ============================================================= -->
 <!-- شاشة النتيجة -->
-<div class="screen" id="screen-result">
-  <div class="cross-deco">✝</div>
-  <div class="card">
-    <h2>انتهت المسابقة!</h2>
-    <p style="text-align:center;color:var(--gold-light);font-weight:700;font-size:1.05rem;margin-bottom:4px;" id="result-name"></p>
-    <div class="result-circle">
-      <span class="big-score" id="result-score">0</span>
-      <span class="out-of">من <span id="result-total">20</span></span>
-    </div>
-    <p class="result-pct" id="result-pct"></p>
-    <p class="result-msg" id="result-msg"></p>
-    <div class="divider"></div>
-    <p style="text-align:center;font-size:.78rem;color:rgba(240,232,204,.35);">نتيجتك محفوظة ✅ شكراً لمشاركتك</p>
-    <button class="btn-secondary" onclick="resetAndRestart()">🔄 بدء مسابقة جديدة</button>
+<!-- ============================================================= -->
+<div class="card hidden" id="resultScreen">
+  <div class="result-icon"><span class="gem gem-big"></span></div>
+  <div class="result-title">خلصت المسابقة! 🎉</div>
+  <div class="result-sub">ربنا يبارك تعبك</div>
+  <div class="result-stats">
+    <div class="stat"><div class="n" id="finalCorrect">0</div><div class="l">إجابات صح</div></div>
+    <div class="stat"><div class="n" id="finalGemsRound">0</div><div class="l">جواهر جمعتها دلوقتي</div></div>
+    <div class="stat"><div class="n" id="finalGemsTotal">0</div><div class="l">إجمالي الجواهر</div></div>
   </div>
+  <button class="btn" id="restartBtn">رجوع لشاشة الدخول</button>
 </div>
 
 <script>
-// ====================================================
-// 📝 الأسئلة - ١٠ ديني أرثوذكسي صعب + ١٠ معلومات عامة صعب جداً
-// ====================================================
-const questions = [
-  // ——— ١٠ أسئلة دينية أرثوذكسية صعبة ———
-  { category:"ديني", q:"ما هو المعنى الحرفي لاسم 'تيموثاوس' الذي لقبه به القديس بولس؟", options:["صديق الله","مكرم الله","حبيب الله","عابد الله"], answer:0 },
-  { category:"ديني", q:"من هو مؤلف كتاب 'النسك' (أول كتاب في النسكيات المسيحية الشرقية)؟", options:["القديس أثناسيوس","القديس يوحنا الذهبي الفم","القديس باسيليوس الكبير","القديس إسحق السرياني"], answer:2 },
-  { category:"ديني", q:"كم عدد المزامير التي يحويها الإبصلمودية (بصفة أساسية) في الكنيسة القبطية؟", options:["150 مزموراً","151 مزموراً","153 مزموراً","147 مزموراً"], answer:1 },
-  { category:"ديني", q:"أي من آباء الكنيسة التالين كتب 'السلسلة الذهبية' (Catena Aurea) في شرح الإنجيل؟", options:["القديس أغسطينوس","القديس توما الأكويني","القديس أمبروسيوس","القديس جيروم"], answer:1 },
-  { category:"ديني", q:"ما هو اسم الفرعون الذي يذكر في التقليد الكنسي أنه استشهد على يد القديس موريس والجنود الطيبة؟", options:["دقلديانوس","مكسيميانوس","ديوسقورس","كاليغولا"], answer:0 },
-  { category:"ديني", q:"أي قانون من قوانين الكنيسة يتعلق بشرط السن لرسامة الكاهن في الكنيسة القبطية؟", options:["القانون 25 للرسل","القانون 20 لمجمع نيقية","القانون 15 لمجمع خلقيدونية","القانون 80 لمجمع ترولو"], answer:0 },
-  { category:"ديني", q:"ما هو المصطلح الليتورجي لصلاة 'أبانا الذي في السموات' في الطقس الإسكندري؟", options:["صلاة النياحة","صلاة التقديس","الصلاة الربانية","صلاة الشكر"], answer:2 },
-  { category:"ديني", q:"من هو البابا الذي قاد الكنيسة القبطية في فترة المجامع المسكونية الأربعة الأولى؟", options:["البابا كيرلس الكبير","البابا أثناسيوس الرسولي","البابا ديوسقورس","البابا ثاؤفيلس"], answer:0 },
-  { category:"ديني", q:"ما هي القراءة الإنجيلية التي تُقرأ في قداس خميس الأسرار (العشاء الأخير)؟", options:["يوحنا 13: 1-17","متى 26: 17-35","لوقا 22: 14-30","مرقس 14: 12-26"], answer:0 },
-  { category:"ديني", q:"ما هو اسم الأسقف الذي عارض الإيمان الخلقيدوني في مصر ودافع عن العقيدة الأرثوذكسية؟", options:["الأنبا شنودة","الأنبا باخوميوس","الأنبا يؤانس","الأنبا ذوقسطوس"], answer:2 },
-  // ——— ١٠ أسئلة معلومات عامة صعبة جداً ———
-  { category:"معلومات عامة", q:"ما هو أكبر عضو داخلي في جسم الإنسان من حيث الوزن؟", options:["الكبد","الدماغ","الرئتين","القلب"], answer:0 },
-  { category:"معلومات عامة", q:"ما هي اللغة الأكثر أصالة (غير منقرضة) والتي تحتوي على أكبر عدد من الحروف في الأبجدية؟", options:["الخميرية (كمبوديا)","الجورجية","الروسية","العربية"], answer:0 },
-  { category:"معلومات عامة", q:"في أي عصر جيولوجي ظهرت الديناصورات لأول مرة؟", options:["عصر حقب الحياة الوسطى - الترياسي","عصر حقب الحياة الوسطى - الجوراسي","عصر حقب الحياة الوسطى - الطباشيري","عصر حقب الحياة القديمة - البرمي"], answer:0 },
-  { category:"معلومات عامة", q:"كم عدد الأوتار في آلة القانون الشرقي (العود الشرقي أو السنتير الفارسي)؟", options:["72 وتراً","90 وتراً","100 وتر","54 وتراً"], answer:1 },
-  { category:"معلومات عامة", q:"من هو العالم الذي وضع معادلة حساب سرعة الصوت في الماء؟", options:["نيوتن","أينشتاين","لابلاس","فورييه"], answer:2 },
-  { category:"معلومات عامة", q:"أي من هذه الدول ليس لها أقاليم ما وراء البحار (مستعمرات سابقة)؟", options:["فرنسا","بريطانيا","إسبانيا","ألمانيا"], answer:3 },
-  { category:"معلومات عامة", q:"ما هو التركيب الكيميائي لجزيء الكلوروفيل (الصيغة الأساسية)؟", options:["C55H72O5N4Mg","C55H72O5N4Fe","C55H72O6N4Mg","C55H72O6N4Zn"], answer:0 },
-  { category:"معلومات عامة", q:"أي نهر يعد الأطول في أمريكا الجنوبية (من ناحية التدفق)؟", options:["نهر الأمازون","نهر بارانا","نهر أورينوكو","نهر ماديرا"], answer:0 },
-  { category:"معلومات عامة", q:"كم عدد الخيوط (الكروموسومات) في خلية جسم القطط؟", options:["36","38","44","46"], answer:1 },
-  { category:"معلومات عامة", q:"من هو المخترع الذي حصل على براءة اختراع للمحرك البخاري الحديث (النوع الأول)؟", options:["جيمس واط","توماس نيوكومن","جورج ستيفنسون","ريتشارد تريفيثيك"], answer:0 }
+/* =====================================================================
+   ١) الأسئلة — عدّل هنا براحتك
+   كل سؤال: نص السؤال، 4 اختيارات، ورقم الاختيار الصح (0 = الأول، 3 = الرابع)
+   ===================================================================== */
+const QUESTIONS = [
+  { q: "مين اللي بنى الفلك؟", options: ["نوح", "إبراهيم", "موسى", "داود"], correct: 0 },
+  { q: "كام عدد أسباط بني إسرائيل؟", options: ["10", "12", "14", "7"], correct: 1 },
+  { q: "في أي مدينة وُلد السيد المسيح؟", options: ["الناصرة", "أورشليم", "بيت لحم", "كفر ناحوم"], correct: 2 },
+  { q: "مين أول شهيد في المسيحية؟", options: ["بولس", "اسطفانوس", "بطرس", "يوحنا"], correct: 1 },
+  { q: "كام عدد تلاميذ السيد المسيح؟", options: ["10", "12", "7", "15"], correct: 1 },
+  { q: "مين اللي أنكر المسيح ثلاث مرات؟", options: ["توما", "بطرس", "يهوذا", "فيلبس"], correct: 1 },
+  { q: "في أي بحر عبر موسى وشعبه؟", options: ["البحر الأبيض", "البحر الأحمر", "بحر الجليل", "البحر الميت"], correct: 1 },
+  { q: "مين اللي كتب سفر الرؤيا؟", options: ["يوحنا", "متى", "مرقس", "لوقا"], correct: 0 },
+  { q: "كام يوم صام السيد المسيح في البرية؟", options: ["7 أيام", "30 يوم", "40 يوم", "3 أيام"], correct: 2 },
+  { q: "مين والدة السيد المسيح؟", options: ["مريم المجدلية", "العذراء مريم", "أليصابات", "مرثا"], correct: 1 },
+  { q: "مين اللي قتل أخوه هابيل؟", options: ["قايين", "حام", "لامك", "شيت"], correct: 0 },
+  { q: "بنحتفل بقيامة السيد المسيح في عيد إيه؟", options: ["عيد الميلاد", "عيد الغطاس", "عيد القيامة", "عيد العنصرة"], correct: 2 },
+  { q: "أول معجزة عملها السيد المسيح كانت في عرس قانا الجليل، وكانت تحويل إيه لخمر؟", options: ["الخبز", "الماء", "العصير", "اللبن"], correct: 1 },
+  { q: "كام يوم خلق ربنا فيها العالم؟", options: ["5 أيام", "6 أيام", "7 أيام", "3 أيام"], correct: 1 },
+  { q: "مين أشهر ملوك إسرائيل اللي اشتهر بالحكمة؟", options: ["شاول", "داود", "سليمان", "رحبعام"], correct: 2 },
+  { q: "مين الملاك اللي بشّر العذراء مريم بميلاد السيد المسيح؟", options: ["ميخائيل", "غبريال", "رافائيل", "أورئيل"], correct: 1 },
+  { q: "مين اللي خان السيد المسيح؟", options: ["توما", "متى", "يهوذا الإسخريوطي", "برثولماوس"], correct: 2 },
+  { q: "في أي جبل استلم موسى الوصايا العشر؟", options: ["جبل سيناء", "جبل الزيتون", "جبل حوريب", "جبل الجلجثة"], correct: 0 },
+  { q: "مين اللي اتلقى في جب الأسود وربنا نجاه؟", options: ["دانيال", "إرميا", "حزقيال", "إشعياء"], correct: 0 },
+  { q: "مين اللي صنع سفينة (فلك) بأمر من ربنا عشان ينجو من الطوفان؟", options: ["إبراهيم", "نوح", "لوط", "يوسف"], correct: 1 },
 ];
 
-// ====================================================
-// 🧠 المنطق
-// ====================================================
+/* =====================================================================
+   ٢) الباسوردات — الخمسين باسورد. عدّل أو ضيف براحتك
+   ===================================================================== */
+const PASSWORDS = [
+  "KENISA01","KENISA02","KENISA03","KENISA04","KENISA05",
+  "KENISA06","KENISA07","KENISA08","KENISA09","KENISA10",
+  "KENISA11","KENISA12","KENISA13","KENISA14","KENISA15",
+  "KENISA16","KENISA17","KENISA18","KENISA19","KENISA20",
+  "KENISA21","KENISA22","KENISA23","KENISA24","KENISA25",
+  "KENISA26","KENISA27","KENISA28","KENISA29","KENISA30",
+  "KENISA31","KENISA32","KENISA33","KENISA34","KENISA35",
+  "KENISA36","KENISA37","KENISA38","KENISA39","KENISA40",
+  "KENISA41","KENISA42","KENISA43","KENISA44","KENISA45",
+  "KENISA46","KENISA47","KENISA48","KENISA49","KENISA50",
+];
 
-const SECRET_PASSWORD = "250746";
-const TIME_LIMIT = 20;
+/* =====================================================================
+   إعدادات عامة
+   ===================================================================== */
+const GEMS_PER_CORRECT = 5;
+const TIME_PER_QUESTION = 20;
+const WARNING_AT = 10;
 
-let currentUser = null; // { name, phone }
-let currentQ = 0;
-let score = 0;
-let answers = [];
-let answered = false;
+const LS_USED_PASSWORDS = "kenisa_used_passwords";
+const LS_TOTAL_GEMS = "kenisa_total_gems";
+
+/* ---------------------------------------------------------------
+   عناصر الشاشات
+   --------------------------------------------------------------- */
+const gateScreen = document.getElementById("gateScreen");
+const quizScreen = document.getElementById("quizScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const passwordInput = document.getElementById("passwordInput");
+const enterBtn = document.getElementById("enterBtn");
+const gateMsg = document.getElementById("gateMsg");
+
+const gemCountEl = document.getElementById("gemCount");
+const qIndexLabel = document.getElementById("qIndexLabel");
+const progressFill = document.getElementById("progressFill");
+const timerText = document.getElementById("timerText");
+const warningLabel = document.getElementById("warningLabel");
+const questionText = document.getElementById("questionText");
+const optionsWrap = document.getElementById("optionsWrap");
+const feedback = document.getElementById("feedback");
+
+const finalCorrect = document.getElementById("finalCorrect");
+const finalGemsRound = document.getElementById("finalGemsRound");
+const finalGemsTotal = document.getElementById("finalGemsTotal");
+const restartBtn = document.getElementById("restartBtn");
+
+let currentIndex = 0;
+let roundGems = 0;
+let correctCount = 0;
+let totalGems = 0;
 let timerInterval = null;
-let timeLeft = TIME_LIMIT;
-let warningInterval = null;
+let timeLeft = TIME_PER_QUESTION;
+let answered = false;
 
-const show = id => document.querySelectorAll('.screen').forEach(s => s.style.display = s.id === id ? 'flex' : 'none');
-const el = id => document.getElementById(id);
-
-// تنظيف رقم الموبايل
-function cleanPhone(p) {
-  return p.replace(/\D/g, '').slice(-11);
+/* ---------------------------------------------------------------
+   تخزين محلي (كل موبايل/متصفح بياخد رصيده لوحده)
+   --------------------------------------------------------------- */
+function getUsedPasswords(){
+  try{
+    return JSON.parse(localStorage.getItem(LS_USED_PASSWORDS)) || [];
+  }catch(e){ return []; }
 }
-
-// ---- حفظ واسترجاع من Local Storage ----
-function saveUserData() {
-  if (!currentUser) return;
-  const data = {
-    name: currentUser.name,
-    phone: currentUser.phone,
-    currentQ: currentQ,
-    score: score,
-    answers: answers,
-    completed: currentQ >= questions.length,
-    passwordVerified: false
-  };
-  localStorage.setItem('quiz_data_' + currentUser.phone, JSON.stringify(data));
-  localStorage.setItem('quiz_phone', currentUser.phone);
-}
-
-function loadUserData(phone) {
-  const raw = localStorage.getItem('quiz_data_' + phone);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch(e) {
-    return null;
+function markPasswordUsed(pw){
+  const used = getUsedPasswords();
+  if(!used.includes(pw)){
+    used.push(pw);
+    localStorage.setItem(LS_USED_PASSWORDS, JSON.stringify(used));
   }
 }
-
-function deleteUserData(phone) {
-  localStorage.removeItem('quiz_data_' + phone);
-  localStorage.removeItem('quiz_phone');
+function getTotalGems(){
+  return parseInt(localStorage.getItem(LS_TOTAL_GEMS) || "0", 10);
+}
+function saveTotalGems(n){
+  localStorage.setItem(LS_TOTAL_GEMS, String(n));
 }
 
-// ---- تسجيل الدخول ----
-window.doRegister = async () => {
-  const name = el('input-name').value.trim();
-  const phone = cleanPhone(el('input-phone').value.trim());
-  el('reg-error').style.display = 'none';
+/* ---------------------------------------------------------------
+   شاشة الدخول
+   --------------------------------------------------------------- */
+enterBtn.addEventListener("click", tryEnter);
+passwordInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") tryEnter(); });
 
-  if (!name) { el('reg-error').textContent = '❌ اكتب اسمك!'; el('reg-error').style.display='block'; return; }
-  if (phone.length < 10) { el('reg-error').textContent = '❌ رقم الموبايل غلط!'; el('reg-error').style.display='block'; return; }
-
-  const saved = loadUserData(phone);
-  
-  if (!saved) {
-    // مستخدم جديد
-    currentUser = { name, phone };
-    currentQ = 0;
-    score = 0;
-    answers = [];
-    saveUserData();
-    startQuiz(name);
-  } else {
-    // مستخدم موجود
-    if (saved.name.trim() !== name.trim()) {
-      el('reg-error').textContent = '❌ الاسم مش مطابق للرقم ده!';
-      el('reg-error').style.display = 'block';
-      return;
-    }
-    currentUser = { name: saved.name, phone };
-    currentQ = saved.currentQ || 0;
-    score = saved.score || 0;
-    answers = saved.answers || [];
-    
-    if (saved.completed) {
-      // خلص المسابقة قبل كده
-      if (saved.passwordVerified) {
-        showResults(score, saved.name);
-      } else {
-        show('screen-password');
-        el('pw-error').style.display = 'none';
-        el('pw-success').style.display = 'none';
-        el('input-password').value = '';
-      }
-    } else {
-      startQuiz(saved.name);
-    }
+function tryEnter(){
+  const pw = passwordInput.value.trim().toUpperCase();
+  if(!pw){
+    showGateMsg("اكتب الباسورد الأول", true);
+    return;
   }
-};
-
-// ---- كلمة المرور ----
-window.checkPassword = () => {
-  const pw = el('input-password').value.trim();
-  el('pw-error').style.display = 'none';
-  el('pw-success').style.display = 'none';
-  
-  if (pw === SECRET_PASSWORD) {
-    el('pw-success').style.display = 'block';
-    // تحديث حالة passwordVerified
-    const data = loadUserData(currentUser.phone);
-    if (data) {
-      data.passwordVerified = true;
-      localStorage.setItem('quiz_data_' + currentUser.phone, JSON.stringify(data));
-    }
-    setTimeout(() => {
-      showResults(score, currentUser.name);
-    }, 800);
-  } else {
-    el('pw-error').style.display = 'block';
+  if(!PASSWORDS.includes(pw)){
+    showGateMsg("الباسورد ده مش صح", true);
+    return;
   }
-};
-
-// ---- بدء المسابقة ----
-function startQuiz(name) {
-  show('screen-quiz');
-  el('user-name-display').textContent = 'مرحباً، ' + name + ' 👋';
-  renderQuestion();
+  const used = getUsedPasswords();
+  if(used.includes(pw)){
+    showGateMsg("الباسورد ده استخدم قبل كده، لازم باسورد تاني", true);
+    return;
+  }
+  // باسورد صح ومش مستخدم -> نسجله كمستخدم فورا
+  markPasswordUsed(pw);
+  showGateMsg("اهلا بيك! يلا نبدأ 🙏", false);
+  setTimeout(startQuiz, 500);
 }
 
-// ---- عرض السؤال ----
-function renderQuestion() {
-  if (currentQ >= questions.length) { finishQuiz(); return; }
-  
-  clearInterval(timerInterval);
-  clearInterval(warningInterval);
+function showGateMsg(text, isError){
+  gateMsg.textContent = text;
+  gateMsg.className = "msg " + (isError ? "err" : "ok");
+}
+
+/* ---------------------------------------------------------------
+   بداية المسابقة
+   --------------------------------------------------------------- */
+function startQuiz(){
+  currentIndex = 0;
+  roundGems = 0;
+  correctCount = 0;
+  totalGems = getTotalGems();
+  gemCountEl.textContent = totalGems;
+
+  gateScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
+
+  showQuestion();
+}
+
+function showQuestion(){
   answered = false;
-  timeLeft = TIME_LIMIT;
-  
-  const q = questions[currentQ];
-  el('q-number').textContent = `سؤال ${currentQ + 1} من ${questions.length}`;
-  el('q-category').textContent = q.category === 'ديني' ? '✝️ ديني' : '🌍 معلومات عامة';
-  el('q-category').className = 'q-category ' + (q.category === 'ديني' ? 'cat-religious' : 'cat-general');
-  el('q-text').textContent = q.q;
-  el('progress-bar').style.width = ((currentQ / questions.length) * 100) + '%';
-  el('live-score').textContent = score;
-  
-  el('timer-display').textContent = `⏱️ ${timeLeft}s`;
-  el('timer-display').className = 'timer-normal';
-  el('warning-text').textContent = '';
-  el('warning-text').style.display = 'none';
+  feedback.textContent = "";
+  feedback.className = "feedback";
+  warningLabel.classList.remove("show");
 
-  const opts = el('options');
-  opts.innerHTML = '';
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
+  const total = QUESTIONS.length;
+  const item = QUESTIONS[currentIndex];
+
+  qIndexLabel.textContent = `سؤال ${currentIndex+1} / ${total}`;
+  progressFill.style.width = `${((currentIndex)/total)*100}%`;
+  questionText.textContent = item.q;
+
+  optionsWrap.innerHTML = "";
+  item.options.forEach((opt, i)=>{
+    const btn = document.createElement("button");
+    btn.className = "option";
     btn.textContent = opt;
-    btn.onclick = () => selectAnswer(i, btn);
-    opts.appendChild(btn);
+    btn.addEventListener("click", ()=> selectAnswer(i));
+    optionsWrap.appendChild(btn);
   });
-  el('btn-next').style.display = 'none';
-  el('feedback').textContent = '';
 
   startTimer();
-  saveUserData();
 }
 
-// ---- التايمر ----
-function startTimer() {
-  timerInterval = setInterval(() => {
+function startTimer(){
+  clearInterval(timerInterval);
+  timeLeft = TIME_PER_QUESTION;
+  timerText.textContent = timeLeft;
+  timerText.classList.remove("warning");
+
+  timerInterval = setInterval(()=>{
     timeLeft--;
-    el('timer-display').textContent = `⏱️ ${timeLeft}s`;
+    timerText.textContent = timeLeft;
 
-    if (timeLeft <= 10 && timeLeft > 0) {
-      el('timer-display').className = 'timer-warning';
-      if (!warningInterval) {
-        let showWarning = true;
-        warningInterval = setInterval(() => {
-          el('warning-text').style.display = showWarning ? 'block' : 'none';
-          showWarning = !showWarning;
-        }, 400);
-      }
+    if(timeLeft <= WARNING_AT && timeLeft > 0){
+      timerText.classList.add("warning");
+      warningLabel.classList.add("show");
     }
-
-    if (timeLeft <= 0) {
+    if(timeLeft <= 0){
       clearInterval(timerInterval);
-      clearInterval(warningInterval);
-      warningInterval = null;
-      el('warning-text').style.display = 'none';
-      if (!answered) {
-        answered = true;
-        const q = questions[currentQ];
-        document.querySelectorAll('.option-btn').forEach((btn, idx) => {
-          if (idx === q.answer) btn.classList.add('correct');
-          btn.style.pointerEvents = 'none';
-        });
-        el('feedback').textContent = '⏰ انتهى الوقت! الإجابة الصحيحة: ' + q.options[q.answer];
-        el('feedback').style.color = '#fbbf24';
-        answers.push(-1);
-        el('btn-next').style.display = 'block';
-        el('timer-display').textContent = '⏱️ 0s';
-        el('timer-display').className = 'timer-timeout';
-        saveUserData();
-      }
+      if(!answered) selectAnswer(-1); // وقت خلص من غير إجابة
     }
   }, 1000);
 }
 
-// ---- اختيار الإجابة ----
-function selectAnswer(idx, btn) {
-  if (answered) return;
+function selectAnswer(choiceIndex){
+  if(answered) return;
   answered = true;
   clearInterval(timerInterval);
-  clearInterval(warningInterval);
-  warningInterval = null;
-  el('warning-text').style.display = 'none';
-  
-  const q = questions[currentQ];
-  const correct = q.answer === idx;
-  if (correct) { 
-    score++; 
-    btn.classList.add('correct'); 
-    el('feedback').textContent = '✅ إجابة صحيحة!'; 
-    el('feedback').style.color = '#4ade80'; 
-  } else { 
-    btn.classList.add('wrong'); 
-    el('feedback').textContent = '❌ إجابة خاطئة! الصح: ' + q.options[q.answer]; 
-    el('feedback').style.color = '#f87171'; 
-    document.querySelectorAll('.option-btn')[q.answer].classList.add('correct'); 
+
+  const item = QUESTIONS[currentIndex];
+  const options = optionsWrap.querySelectorAll(".option");
+  options.forEach((btn, i)=>{
+    btn.disabled = true;
+    if(i === item.correct) btn.classList.add("correct");
+    else if(i === choiceIndex) btn.classList.add("wrong");
+  });
+
+  if(choiceIndex === item.correct){
+    correctCount++;
+    roundGems += GEMS_PER_CORRECT;
+    totalGems += GEMS_PER_CORRECT;
+    saveTotalGems(totalGems);
+    gemCountEl.textContent = totalGems;
+    feedback.textContent = `إجابة صح! +${GEMS_PER_CORRECT} جوهرة 💎`;
+    feedback.className = "feedback gain";
+  } else if(choiceIndex === -1){
+    feedback.textContent = "خلص الوقت ⏰";
+    feedback.className = "feedback miss";
+  } else {
+    feedback.textContent = "إجابة غلط";
+    feedback.className = "feedback miss";
   }
-  answers.push(idx);
-  el('live-score').textContent = score;
-  el('btn-next').style.display = 'block';
-  document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
-  saveUserData();
+
+  setTimeout(nextQuestion, 1400);
 }
 
-// ---- السؤال التالي ----
-window.nextQuestion = () => {
-  clearInterval(timerInterval);
-  clearInterval(warningInterval);
-  warningInterval = null;
-  currentQ++;
-  renderQuestion();
-};
-
-// ---- إنهاء المسابقة ----
-function finishQuiz() {
-  clearInterval(timerInterval);
-  clearInterval(warningInterval);
-  warningInterval = null;
-  // حفظ كـ completed
-  const data = loadUserData(currentUser.phone);
-  if (data) {
-    data.completed = true;
-    data.passwordVerified = false;
-    localStorage.setItem('quiz_data_' + currentUser.phone, JSON.stringify(data));
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex >= QUESTIONS.length){
+    showResults();
+  } else {
+    showQuestion();
   }
-  showResults(score, currentUser.name);
 }
 
-// ---- عرض النتيجة ----
-function showResults(finalScore, name) {
-  show('screen-result');
-  el('result-name').textContent = name;
-  el('result-score').textContent = finalScore;
-  el('result-total').textContent = questions.length;
-  const pct = Math.round((finalScore / questions.length) * 100);
-  el('result-pct').textContent = pct + '%';
-  el('result-msg').textContent =
-    pct >= 80 ? '🏆 ممتاز! أداء رائع يليق بمسيحي أرثوذكسي متمكن!' :
-    pct >= 60 ? '👏 جيد جداً! بتزيد معلوماتك كمان' :
-    pct >= 40 ? '📖 مقبول، في مجال للتطوير' : '💪 لازم تذاكر أكتر، الله يبارك فيك!';
+function showResults(){
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  progressFill.style.width = "100%";
+
+  finalCorrect.textContent = `${correctCount} / ${QUESTIONS.length}`;
+  finalGemsRound.textContent = roundGems;
+  finalGemsTotal.textContent = totalGems;
 }
 
-// ---- إعادة التشغيل ----
-window.resetAndRestart = () => {
-  if (currentUser) {
-    deleteUserData(currentUser.phone);
-  }
-  currentUser = null;
-  currentQ = 0;
-  score = 0;
-  answers = [];
-  el('input-name').value = '';
-  el('input-phone').value = '';
-  show('screen-login');
-};
-
-// ---- تحميل الصفحة ----
-window.addEventListener('load', () => {
-  const savedPhone = localStorage.getItem('quiz_phone');
-  if (savedPhone) {
-    const data = loadUserData(savedPhone);
-    if (data) {
-      el('input-name').value = data.name;
-      el('input-phone').value = data.phone;
-      currentUser = { name: data.name, phone: savedPhone };
-      currentQ = data.currentQ || 0;
-      score = data.score || 0;
-      answers = data.answers || [];
-      
-      if (data.completed) {
-        if (data.passwordVerified) {
-          showResults(score, data.name);
-        } else {
-          show('screen-password');
-          el('pw-error').style.display = 'none';
-          el('pw-success').style.display = 'none';
-        }
-      } else {
-        startQuiz(data.name);
-      }
-    }
-  }
+restartBtn.addEventListener("click", ()=>{
+  resultScreen.classList.add("hidden");
+  gateScreen.classList.remove("hidden");
+  passwordInput.value = "";
+  gateMsg.textContent = "";
 });
 </script>
-
 </body>
 </html>

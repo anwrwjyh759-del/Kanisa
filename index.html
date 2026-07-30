@@ -3,541 +3,430 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مسابقة الكنيسة</title>
+<title>RELOAD</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap');
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #05060c;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255,0,60,0.15), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(0,140,255,0.18), transparent 40%);
+    font-family: 'Cairo', sans-serif;
+    color: #e8f4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(8, 10, 20, 0.85);
+    border: 2px solid #ff1744;
+    border-radius: 18px;
+    padding: 28px 22px;
+    box-shadow:
+      0 0 12px #ff1744,
+      0 0 30px rgba(255,23,68,0.4),
+      inset 0 0 20px rgba(0,153,255,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(135deg, #ff1744, #00b0ff, #ff1744);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  h1.logo {
+    text-align: center;
+    font-size: 2.6em;
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin: 0 0 4px;
+    color: #fff;
+    text-shadow:
+      0 0 6px #00b0ff,
+      0 0 16px #00b0ff,
+      0 0 26px #ff1744,
+      0 0 40px #ff1744;
+  }
+  .subtitle {
+    text-align: center;
+    color: #7fd8ff;
+    font-size: 0.85em;
+    margin-bottom: 22px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px #00b0ff;
+  }
+  .neon-blue { color: #4fd1ff; text-shadow: 0 0 6px #00b0ff, 0 0 12px #00b0ff; }
+  .neon-red { color: #ff5c7a; text-shadow: 0 0 6px #ff1744, 0 0 12px #ff1744; }
 
-:root{
-  --bg-deep:#0b1533;
-  --bg-panel:#131f4d;
-  --gold:#d4af37;
-  --gold-soft:#f0d78c;
-  --cream:#f4ecd8;
-  --gem-1:#7ec8ff;
-  --gem-2:#1c5fb8;
-  --gem-3:#0a2f6e;
-  --warn:#e63946;
-  --ok:#3fbf7f;
-}
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 10px;
+    border: 2px solid #00b0ff;
+    background: #0a0d18;
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1em;
+    outline: none;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0,176,255,0.5);
+    margin-bottom: 14px;
+  }
+  input:focus { border-color: #ff1744; box-shadow: 0 0 12px rgba(255,23,68,0.7); }
 
-*{box-sizing:border-box; margin:0; padding:0;}
+  button {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #ff1744, #b0003a);
+    box-shadow: 0 0 14px rgba(255,23,68,0.7);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button:hover { transform: translateY(-1px); box-shadow: 0 0 20px rgba(255,23,68,0.9); }
+  button:active { transform: translateY(0); }
+  button.blue {
+    background: linear-gradient(135deg, #00b0ff, #005a8c);
+    box-shadow: 0 0 14px rgba(0,176,255,0.7);
+  }
+  button.blue:hover { box-shadow: 0 0 20px rgba(0,176,255,0.9); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(212,175,55,0.08), transparent 40%),
-    radial-gradient(circle at 80% 90%, rgba(30,90,180,0.15), transparent 45%),
-    var(--bg-deep);
-  color:var(--cream);
-  font-family:'Cairo', sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  overflow-x:hidden;
-}
+  .progress-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    font-size: 0.85em;
+    color: #9fd8ff;
+  }
+  .bar-bg {
+    background: #0a0d18;
+    border: 1px solid #00b0ff;
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff1744, #00b0ff);
+    box-shadow: 0 0 8px #ff1744;
+    transition: width 0.3s ease;
+  }
 
-.stars{
-  position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 80% 30%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1.5px 1.5px at 50% 70%, rgba(255,255,255,0.3), transparent),
-    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 30% 90%, rgba(255,255,255,0.3), transparent);
-  background-repeat:repeat;
-  background-size:400px 400px;
-}
+  .question-box {
+    background: rgba(0,176,255,0.06);
+    border: 1px solid rgba(0,176,255,0.4);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+    font-size: 1.05em;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .choice {
+    display: block;
+    width: 100%;
+    text-align: right;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,23,68,0.5);
+    background: rgba(10,13,24,0.8);
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.98em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .choice:hover { border-color: #ff1744; box-shadow: 0 0 10px rgba(255,23,68,0.6); }
+  .choice.correct { border-color: #00e676; background: rgba(0,230,118,0.15); box-shadow: 0 0 14px rgba(0,230,118,0.6); }
+  .choice.wrong { border-color: #ff1744; background: rgba(255,23,68,0.2); box-shadow: 0 0 14px rgba(255,23,68,0.6); }
+  .choice.disabled { pointer-events: none; opacity: 0.85; }
 
-.card{
-  position:relative; z-index:1;
-  width:100%; max-width:520px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-  border:1px solid rgba(212,175,55,0.35);
-  border-radius:20px;
-  padding:36px 30px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-  backdrop-filter:blur(6px);
-}
-
-.eyebrow{
-  text-align:center; color:var(--gold-soft); letter-spacing:3px;
-  font-size:12px; font-weight:700; text-transform:uppercase; margin-bottom:6px;
-  opacity:0.85;
-}
-
-h1{
-  font-family:'Amiri', serif;
-  text-align:center;
-  font-size:32px;
-  color:var(--gold-soft);
-  margin-bottom:6px;
-  text-shadow:0 0 20px rgba(212,175,55,0.3);
-}
-
-.subtitle{
-  text-align:center; color:rgba(244,236,216,0.65); font-size:14px; margin-bottom:28px;
-}
-
-/* ---- gate screen ---- */
-.gate-input{
-  width:100%;
-  padding:16px 18px;
-  border-radius:12px;
-  border:1px solid rgba(212,175,55,0.4);
-  background:rgba(255,255,255,0.05);
-  color:var(--cream);
-  font-family:'Cairo', sans-serif;
-  font-size:18px;
-  text-align:center;
-  letter-spacing:2px;
-  outline:none;
-  margin-bottom:14px;
-  transition:border-color .2s, box-shadow .2s;
-}
-.gate-input:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.15); }
-
-.btn{
-  width:100%;
-  padding:15px;
-  border-radius:12px;
-  border:none;
-  font-family:'Cairo', sans-serif;
-  font-weight:700;
-  font-size:17px;
-  cursor:pointer;
-  background:linear-gradient(135deg, var(--gold), #a97e1f);
-  color:#1a1207;
-  transition:transform .15s, box-shadow .15s;
-}
-.btn:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(212,175,55,0.3); }
-.btn:active{ transform:translateY(0); }
-.btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
-
-.msg{ text-align:center; font-size:14px; min-height:20px; margin-top:12px; font-weight:700; }
-.msg.err{ color:var(--warn); }
-.msg.ok{ color:var(--ok); }
-
-/* ---- gem badge ---- */
-.gem{
-  width:22px; height:22px;
-  display:inline-block;
-  background:
-    linear-gradient(135deg, var(--gem-1) 0%, var(--gem-2) 55%, var(--gem-3) 100%);
-  clip-path:polygon(50% 0%, 85% 25%, 100% 65%, 50% 100%, 0% 65%, 15% 25%);
-  box-shadow:0 0 10px rgba(60,140,255,0.7);
-  vertical-align:middle;
-  position:relative;
-}
-.gem::after{
-  content:"";
-  position:absolute; top:15%; left:28%;
-  width:25%; height:18%;
-  background:rgba(255,255,255,0.8);
-  border-radius:50%;
-  filter:blur(1px);
-}
-.gem-big{ width:64px; height:64px; }
-
-.gem-counter{
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(126,200,255,0.3);
-  border-radius:14px;
-  padding:12px 18px;
-  margin-bottom:24px;
-}
-.gem-counter .num{
-  font-family:'Amiri', serif;
-  font-size:24px;
-  font-weight:700;
-  color:var(--gem-1);
-  text-shadow:0 0 12px rgba(126,200,255,0.5);
-}
-
-/* ---- quiz screen ---- */
-.progress-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:13px; color:rgba(244,236,216,0.6); }
-.progress-bar{ height:6px; border-radius:4px; background:rgba(255,255,255,0.08); overflow:hidden; margin-bottom:22px; }
-.progress-fill{ height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-soft)); transition:width .3s; }
-
-.timer-wrap{ text-align:center; margin-bottom:18px; }
-.timer{
-  display:inline-block;
-  font-family:'Amiri', serif;
-  font-size:34px;
-  font-weight:700;
-  color:var(--cream);
-  transition:color .2s;
-}
-.timer.warning{ color:var(--warn); animation:pulse 0.6s infinite; }
-.warning-label{
-  display:block; color:var(--warn); font-weight:900; font-size:14px;
-  letter-spacing:2px; margin-top:4px; height:18px; opacity:0; transition:opacity .2s;
-}
-.warning-label.show{ opacity:1; animation:pulse 0.6s infinite; }
-@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-
-.question-text{
-  font-family:'Amiri', serif;
-  font-size:22px;
-  text-align:center;
-  line-height:1.6;
-  margin-bottom:26px;
-  min-height:80px;
-  display:flex; align-items:center; justify-content:center;
-}
-
-.options{ display:flex; flex-direction:column; gap:12px; margin-bottom:10px; }
-.option{
-  padding:15px 18px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.03);
-  color:var(--cream);
-  font-family:'Cairo', sans-serif;
-  font-size:16px;
-  text-align:right;
-  cursor:pointer;
-  transition:all .15s;
-}
-.option:hover:not(:disabled){ border-color:var(--gold); background:rgba(212,175,55,0.08); }
-.option:disabled{ cursor:default; }
-.option.correct{ border-color:var(--ok); background:rgba(63,191,127,0.15); color:var(--ok); }
-.option.wrong{ border-color:var(--warn); background:rgba(230,57,70,0.15); color:var(--warn); }
-
-.feedback{ text-align:center; font-size:15px; font-weight:700; min-height:22px; margin:14px 0; }
-.feedback.gain{ color:var(--gem-1); }
-.feedback.miss{ color:var(--warn); }
-
-/* ---- results screen ---- */
-.result-icon{ display:flex; justify-content:center; margin-bottom:16px; }
-.result-title{ font-family:'Amiri', serif; text-align:center; font-size:26px; color:var(--gold-soft); margin-bottom:8px; }
-.result-sub{ text-align:center; color:rgba(244,236,216,0.7); font-size:14px; margin-bottom:26px; }
-.result-stats{ display:flex; justify-content:center; gap:26px; margin-bottom:28px; }
-.stat{ text-align:center; }
-.stat .n{ font-family:'Amiri', serif; font-size:28px; color:var(--gold-soft); font-weight:700; }
-.stat .l{ font-size:12px; color:rgba(244,236,216,0.55); margin-top:2px; }
-
-.hidden{ display:none !important; }
+  .center-text { text-align: center; margin: 10px 0; color: #cfe9ff; line-height: 1.7; }
+  .score-big {
+    text-align: center;
+    font-size: 2.2em;
+    font-weight: 900;
+    margin: 10px 0 4px;
+    color: #fff;
+    text-shadow: 0 0 10px #ff1744, 0 0 20px #00b0ff;
+  }
+  .hint { text-align: center; font-size: 0.8em; color: #6f8db3; margin-top: 8px; }
+  .error-msg { color: #ff5c7a; text-align: center; font-size: 0.9em; margin: -6px 0 14px; min-height: 1em; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #00b0ff;
+    color: #4fd1ff;
+    font-size: 0.75em;
+    text-shadow: 0 0 6px #00b0ff;
+  }
+  .top-row { display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px; }
+  .name-tag { font-size: 0.85em; color: #7fd8ff; }
+  .loading { text-align:center; color:#7fd8ff; padding: 30px 0; }
 </style>
 </head>
 <body>
-<div class="stars"></div>
-
-<!-- ============================================================= -->
-<!-- شاشة الدخول بالباسورد -->
-<!-- ============================================================= -->
-<div class="card" id="gateScreen">
-  <div class="eyebrow">مسابقه مدرسه الكتاب كنيسه السيده العذراء مريم و مارمرقس الرسول|RUSH&SMASH|</div>
-  <h1>✝️ اهلاً بيك</h1>
-  <p class="subtitle">اكتب الباسورد بتاعك عشان تدخل المسابقة</p>
-  <input type="text" id="passwordInput" class="gate-input" placeholder="الباسورد" autocomplete="off">
-  <button class="btn" id="enterBtn">ادخل المسابقة</button>
-  <div class="msg" id="gateMsg"></div>
-</div>
-
-<!-- ============================================================= -->
-<!-- شاشة الأسئلة -->
-<!-- ============================================================= -->
-<div class="card hidden" id="quizScreen">
-  <div class="gem-counter">
-    <span class="gem"></span>
-    <span class="num" id="gemCount">0</span>
-    <span style="font-size:13px; color:rgba(244,236,216,0.6);">جوهرة</span>
-  </div>
-
-  <div class="progress-row">
-    <span id="qIndexLabel">سؤال 1 / 20</span>
-    <span id="qScoreLabel">5 جواهر للإجابة الصح</span>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
-
-  <div class="timer-wrap">
-    <span class="timer" id="timerText">20</span>
-    <span class="warning-label" id="warningLabel">⚠️ الوقت قرب يخلص</span>
-  </div>
-
-  <div class="question-text" id="questionText">نص السؤال</div>
-  <div class="options" id="optionsWrap"></div>
-  <div class="feedback" id="feedback"></div>
-</div>
-
-<!-- ============================================================= -->
-<!-- شاشة النتيجة -->
-<!-- ============================================================= -->
-<div class="card hidden" id="resultScreen">
-  <div class="result-icon"><span class="gem gem-big"></span></div>
-  <div class="result-title">خلصت المسابقة! 🎉</div>
-  <div class="result-sub">ربنا يبارك تعبك</div>
-  <div class="result-stats">
-    <div class="stat"><div class="n" id="finalCorrect">0</div><div class="l">إجابات صح</div></div>
-    <div class="stat"><div class="n" id="finalGemsRound">0</div><div class="l">جواهر جمعتها دلوقتي</div></div>
-    <div class="stat"><div class="n" id="finalGemsTotal">0</div><div class="l">إجمالي الجواهر</div></div>
-  </div>
-  <button class="btn" id="restartBtn">رجوع لشاشة الدخول</button>
+<div class="card" id="app">
+  <div class="loading" id="loadingScreen">جارِ التحميل...</div>
 </div>
 
 <script>
-/* =====================================================================
-   ١) الأسئلة — عدّل هنا براحتك
-   كل سؤال: نص السؤال، 4 اختيارات، ورقم الاختيار الصح (0 = الأول، 3 = الرابع)
-   ===================================================================== */
-const QUESTIONS = [
-  { q: "مين اللي بنى الفلك؟", options: ["نوح", "إبراهيم", "موسى", "داود"], correct: 0 },
-  { q: "كام عدد أسباط بني إسرائيل؟", options: ["10", "12", "14", "7"], correct: 1 },
-  { q: "في أي مدينة وُلد السيد المسيح؟", options: ["الناصرة", "أورشليم", "بيت لحم", "كفر ناحوم"], correct: 2 },
-  { q: "مين أول شهيد في المسيحية؟", options: ["بولس", "اسطفانوس", "بطرس", "يوحنا"], correct: 1 },
-  { q: "كام عدد تلاميذ السيد المسيح؟", options: ["10", "12", "7", "15"], correct: 1 },
-  { q: "مين اللي أنكر المسيح ثلاث مرات؟", options: ["توما", "بطرس", "يهوذا", "فيلبس"], correct: 1 },
-  { q: "في أي بحر عبر موسى وشعبه؟", options: ["البحر الأبيض", "البحر الأحمر", "بحر الجليل", "البحر الميت"], correct: 1 },
-  { q: "مين اللي كتب سفر الرؤيا؟", options: ["يوحنا", "متى", "مرقس", "لوقا"], correct: 0 },
-  { q: "كام يوم صام السيد المسيح في البرية؟", options: ["7 أيام", "30 يوم", "40 يوم", "3 أيام"], correct: 2 },
-  { q: "مين والدة السيد المسيح؟", options: ["مريم المجدلية", "العذراء مريم", "أليصابات", "مرثا"], correct: 1 },
-  { q: "مين اللي قتل أخوه هابيل؟", options: ["قايين", "حام", "لامك", "شيت"], correct: 0 },
-  { q: "بنحتفل بقيامة السيد المسيح في عيد إيه؟", options: ["عيد الميلاد", "عيد الغطاس", "عيد القيامة", "عيد العنصرة"], correct: 2 },
-  { q: "أول معجزة عملها السيد المسيح كانت في عرس قانا الجليل، وكانت تحويل إيه لخمر؟", options: ["الخبز", "الماء", "العصير", "اللبن"], correct: 1 },
-  { q: "كام يوم خلق ربنا فيها العالم؟", options: ["5 أيام", "6 أيام", "7 أيام", "3 أيام"], correct: 1 },
-  { q: "مين أشهر ملوك إسرائيل اللي اشتهر بالحكمة؟", options: ["شاول", "داود", "سليمان", "رحبعام"], correct: 2 },
-  { q: "مين الملاك اللي بشّر العذراء مريم بميلاد السيد المسيح؟", options: ["ميخائيل", "غبريال", "رافائيل", "أورئيل"], correct: 1 },
-  { q: "مين اللي خان السيد المسيح؟", options: ["توما", "متى", "يهوذا الإسخريوطي", "برثولماوس"], correct: 2 },
-  { q: "في أي جبل استلم موسى الوصايا العشر؟", options: ["جبل سيناء", "جبل الزيتون", "جبل حوريب", "جبل الجلجثة"], correct: 0 },
-  { q: "مين اللي اتلقى في جب الأسود وربنا نجاه؟", options: ["دانيال", "إرميا", "حزقيال", "إشعياء"], correct: 0 },
-  { q: "مين اللي صنع سفينة (فلك) بأمر من ربنا عشان ينجو من الطوفان؟", options: ["إبراهيم", "نوح", "لوط", "يوسف"], correct: 1 },
+const STORAGE_KEY = 'reload_progress';
+const PASSWORD = '250746';
+
+// ---------- 40 Questions ----------
+const QUESTIONS_PART1 = [
+  {q:"ما هو العنصر الكيميائي الأكثر وفرة في القشرة الأرضية؟", c:["السيليكون","الأكسجين","الألمنيوم","الحديد"], a:1},
+  {q:"من صاحب نظرية التطور عن طريق الانتقاء الطبيعي؟", c:["غريغور مندل","تشارلز داروين","لويس باستور","ألفريد والاس"], a:1},
+  {q:"ما هي عاصمة كازاخستان؟", c:["ألماتي","أستانا","بيشكيك","تاشكند"], a:1},
+  {q:"من قائل عبارة 'أنا أفكر إذن أنا موجود'؟", c:["إيمانويل كانط","روني ديكارت","باروخ سبينوزا","جورج هيغل"], a:1},
+  {q:"ما هي وحدة قياس شدة التيار الكهربائي؟", c:["الفولت","الأمبير","الأوم","الواط"], a:1},
+  {q:"في أي عام وقعت معركة عين جالوت بين المماليك والمغول؟", c:["1187","1250","1260","1291"], a:2},
+  {q:"من هو مكتشف قانون الجاذبية العامة؟", c:["غاليليو غاليلي","إسحاق نيوتن","يوهانس كبلر","ألبرت أينشتاين"], a:1},
+  {q:"ما هو أطول نهر في قارة أفريقيا؟", c:["نهر الكونغو","نهر النيل","نهر النيجر","نهر الزمبيزي"], a:1},
+  {q:"من هو مؤلف كتاب 'رأس المال'؟", c:["آدم سميث","كارل ماركس","ماكس فيبر","جون كينز"], a:1},
+  {q:"من هو أول خليفة أموي؟", c:["يزيد بن معاوية","معاوية بن أبي سفيان","عبد الملك بن مروان","الوليد بن عبد الملك"], a:1},
+  {q:"ما هي أصغر وحدة بناء وظيفية في الكائن الحي؟", c:["الأنسجة","الخلية","الذرة","الجزيء"], a:1},
+  {q:"من هو مؤلف رواية 'الجريمة والعقاب'؟", c:["ليو تولستوي","فيودور دوستويفسكي","إيفان تورجينيف","نيقولاي غوغول"], a:1},
+  {q:"ما هي عاصمة الأوروغواي؟", c:["بوينس آيرس","مونتفيديو","أسونسيون","سانتياغو"], a:1},
+  {q:"في أي سنة اندلعت الثورة الفرنسية؟", c:["1776","1789","1804","1815"], a:1},
+  {q:"ما اسم الخط الوهمي الذي يقسم الأرض إلى نصف شمالي ونصف جنوبي؟", c:["خط غرينتش","خط الاستواء","مدار السرطان","مدار الجدي"], a:1},
+  {q:"من يُعتبر مؤسس علم الاجتماع الحديث في الفكر الغربي؟", c:["كارل ماركس","أوجست كونت","ماكس فيبر","إميل دوركايم"], a:1},
+  {q:"ما هو أكبر عضو في جسم الإنسان من حيث المساحة؟", c:["الكبد","الجلد","الأمعاء الدقيقة","الرئتان"], a:1},
+  {q:"من هو القائد القرطاجي الذي عبر جبال الألب بالفيلة لمحاربة روما؟", c:["هاميلكار برقا","حنبعل","سكيبيو الأفريقي","يوغرطة"], a:1},
+  {q:"ما اسم المعاهدة التي أنهت رسمياً الحرب العالمية الأولى؟", c:["معاهدة يالطا","معاهدة فرساي","معاهدة وستفاليا","معاهدة باريس"], a:1},
+  {q:"ما هي وحدة قياس الضغط في النظام الدولي؟", c:["النيوتن","الباسكال","الجول","الواط"], a:1}
 ];
 
-/* =====================================================================
-   ٢) الباسوردات — الخمسين باسورد. عدّل أو ضيف براحتك
-   ===================================================================== */
-const PASSWORDS = [
-  "KENISA01","KENISA02","KENISA03","KENISA04","KENISA05",
-  "KENISA06","KENISA07","KENISA08","KENISA09","KENISA10",
-  "KENISA11","KENISA12","KENISA13","KENISA14","KENISA15",
-  "KENISA16","KENISA17","KENISA18","KENISA19","KENISA20",
-  "KENISA21","KENISA22","KENISA23","KENISA24","KENISA25",
-  "KENISA26","KENISA27","KENISA28","KENISA29","KENISA30",
-  "KENISA31","KENISA32","KENISA33","KENISA34","KENISA35",
-  "KENISA36","KENISA37","KENISA38","KENISA39","KENISA40",
-  "KENISA41","KENISA42","KENISA43","KENISA44","KENISA45",
-  "KENISA46","KENISA47","KENISA48","KENISA49","KENISA50",
+const QUESTIONS_PART2 = [
+  {q:"من هو مكتشف مادة البنسلين؟", c:["لويس باستور","ألكسندر فليمنغ","روبرت كوخ","إدوارد جينر"], a:1},
+  {q:"ما اسم أطول جدار دفاعي بناه الإنسان عبر التاريخ؟", c:["جدار برلين","سور الصين العظيم","أسوار القسطنطينية","جدار هادريان"], a:1},
+  {q:"من هو مؤلف ملحمة 'الإلياذة'؟", c:["سوفوكليس","هوميروس","يوربيديس","أرسطوفانيس"], a:1},
+  {q:"ما اسم الحرب التي دارت بين أثينا وإسبرطة في اليونان القديمة؟", c:["الحروب الفارسية","الحرب البيلوبونيسية","حرب طروادة","حروب الإسكندر"], a:1},
+  {q:"ما هي وحدة قياس القوة في النظام الدولي؟", c:["الجول","نيوتن","الواط","الباسكال"], a:1},
+  {q:"من هو أول خليفة راشد بعد وفاة النبي محمد؟", c:["عمر بن الخطاب","أبو بكر الصديق","عثمان بن عفان","علي بن أبي طالب"], a:1},
+  {q:"ما اسم أكبر شعاب مرجانية في العالم؟", c:["شعاب البحر الأحمر","الحاجز المرجاني العظيم","شعاب المحيط الهندي","شعاب الكاريبي"], a:1},
+  {q:"من هو العالم الذي وضع فكرة الكم (الكوانتا) لأول مرة؟", c:["نيلز بور","ماكس بلانك","فيرنر هايزنبرغ","إروين شرودنغر"], a:1},
+  {q:"ما اسم أقدم جامعة لا تزال قائمة حتى اليوم بحسب موسوعة غينيس؟", c:["جامعة الأزهر","جامعة القرويين","جامعة بولونيا","جامعة أكسفورد"], a:1},
+  {q:"في أي معركة هُزم نابليون بونابرت هزيمته الأخيرة؟", c:["معركة أوسترليتز","معركة واترلو","معركة ترافالغار","معركة بورودينو"], a:1},
+  {q:"ما اسم النظرية التي تصف انحناء الزمكان بسبب الكتلة؟", c:["النسبية الخاصة","النسبية العامة","ميكانيكا الكم","نظرية الأوتار"], a:1},
+  {q:"من هو مخترع الطباعة بالحروف المتحركة في أوروبا؟", c:["ويليام كاكستون","يوهان غوتنبرغ","ألدوس مانوتيوس","جون باسكرفيل"], a:1},
+  {q:"ما اسم أكبر صحراء باردة في العالم؟", c:["صحراء غوبي","القارة القطبية الجنوبية","سيبيريا","غرينلاند"], a:1},
+  {q:"من هو مؤلف كتاب 'الأمير' في الفكر السياسي؟", c:["توماس هوبز","نيكولو مكيافيلي","جان جاك روسو","جون لوك"], a:1},
+  {q:"ما اسم الإمبراطورية التي أسسها جنكيز خان؟", c:["الإمبراطورية العثمانية","الإمبراطورية المغولية","إمبراطورية تيمورلنك","الخلافة العباسية"], a:1},
+  {q:"ما هي وحدة قياس الطاقة في النظام الدولي؟", c:["النيوتن","الجول","الواط","الباسكال"], a:1},
+  {q:"من هو مؤلف كتاب 'أصل الأنواع'؟", c:["غريغور مندل","تشارلز داروين","ألفريد والاس","توماس هكسلي"], a:1},
+  {q:"ما اسم البركان الذي دمر مدينة بومبي الرومانية عام 79 ميلادياً؟", c:["إتنا","فيزوف","كراكاتوا","سانت هيلين"], a:1},
+  {q:"من هو الفيلسوف اليوناني الذي كتب محاورة 'الجمهورية'؟", c:["أرسطو","أفلاطون","سقراط","ديموقريطس"], a:1},
+  {q:"ما اسم المعركة التي استعاد فيها صلاح الدين الأيوبي بيت المقدس من الصليبيين؟", c:["معركة حطين","معركة عين جالوت","معركة اليرموك","معركة القادسية"], a:0}
 ];
 
-/* =====================================================================
-   إعدادات عامة
-   ===================================================================== */
-const GEMS_PER_CORRECT = 5;
-const TIME_PER_QUESTION = 20;
-const WARNING_AT = 10;
-
-const LS_USED_PASSWORDS = "kenisa_used_passwords";
-const LS_TOTAL_GEMS = "kenisa_total_gems";
-
-/* ---------------------------------------------------------------
-   عناصر الشاشات
-   --------------------------------------------------------------- */
-const gateScreen = document.getElementById("gateScreen");
-const quizScreen = document.getElementById("quizScreen");
-const resultScreen = document.getElementById("resultScreen");
-
-const passwordInput = document.getElementById("passwordInput");
-const enterBtn = document.getElementById("enterBtn");
-const gateMsg = document.getElementById("gateMsg");
-
-const gemCountEl = document.getElementById("gemCount");
-const qIndexLabel = document.getElementById("qIndexLabel");
-const progressFill = document.getElementById("progressFill");
-const timerText = document.getElementById("timerText");
-const warningLabel = document.getElementById("warningLabel");
-const questionText = document.getElementById("questionText");
-const optionsWrap = document.getElementById("optionsWrap");
-const feedback = document.getElementById("feedback");
-
-const finalCorrect = document.getElementById("finalCorrect");
-const finalGemsRound = document.getElementById("finalGemsRound");
-const finalGemsTotal = document.getElementById("finalGemsTotal");
-const restartBtn = document.getElementById("restartBtn");
-
-let currentIndex = 0;
-let roundGems = 0;
-let correctCount = 0;
-let totalGems = 0;
-let timerInterval = null;
-let timeLeft = TIME_PER_QUESTION;
-let answered = false;
-
-/* ---------------------------------------------------------------
-   تخزين محلي (كل موبايل/متصفح بياخد رصيده لوحده)
-   --------------------------------------------------------------- */
-function getUsedPasswords(){
-  try{
-    return JSON.parse(localStorage.getItem(LS_USED_PASSWORDS)) || [];
-  }catch(e){ return []; }
+function shuffleArray(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
-function markPasswordUsed(pw){
-  const used = getUsedPasswords();
-  if(!used.includes(pw)){
-    used.push(pw);
-    localStorage.setItem(LS_USED_PASSWORDS, JSON.stringify(used));
+
+function getShuffledChoices(item){
+  const order = shuffleArray(item.c.map((_, idx) => idx));
+  const choices = order.map(idx => item.c[idx]);
+  const correctIndex = order.indexOf(item.a);
+  return { choices, correctIndex };
+}
+
+const app = document.getElementById('app');
+let state = null;
+
+function defaultState(){
+  return { name:'', phase:'register', idx:0, score:0, phase2started:false };
+}
+
+async function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    state = raw ? JSON.parse(raw) : defaultState();
+  } catch(e){
+    state = defaultState();
+  }
+  render();
+}
+
+async function saveState(){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e){
+    console.error('فشل الحفظ', e);
   }
 }
-function getTotalGems(){
-  return parseInt(localStorage.getItem(LS_TOTAL_GEMS) || "0", 10);
-}
-function saveTotalGems(n){
-  localStorage.setItem(LS_TOTAL_GEMS, String(n));
-}
 
-/* ---------------------------------------------------------------
-   شاشة الدخول
-   --------------------------------------------------------------- */
-enterBtn.addEventListener("click", tryEnter);
-passwordInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") tryEnter(); });
-
-function tryEnter(){
-  const pw = passwordInput.value.trim().toUpperCase();
-  if(!pw){
-    showGateMsg("اكتب الباسورد الأول", true);
-    return;
-  }
-  if(!PASSWORDS.includes(pw)){
-    showGateMsg("الباسورد ده مش صح", true);
-    return;
-  }
-  const used = getUsedPasswords();
-  if(used.includes(pw)){
-    showGateMsg("الباسورد ده استخدم قبل كده، لازم باسورد تاني", true);
-    return;
-  }
-  // باسورد صح ومش مستخدم -> نسجله كمستخدم فورا
-  markPasswordUsed(pw);
-  showGateMsg("اهلا بيك! يلا نبدأ 🙏", false);
-  setTimeout(startQuiz, 500);
+function render(){
+  if (state.phase === 'register') return renderRegister();
+  if (state.phase === 'quiz1') return renderQuiz(QUESTIONS_PART1, 'quiz1');
+  if (state.phase === 'password') return renderPassword();
+  if (state.phase === 'quiz2') return renderQuiz(QUESTIONS_PART2, 'quiz2');
+  if (state.phase === 'finished') return renderFinished();
 }
 
-function showGateMsg(text, isError){
-  gateMsg.textContent = text;
-  gateMsg.className = "msg " + (isError ? "err" : "ok");
-}
-
-/* ---------------------------------------------------------------
-   بداية المسابقة
-   --------------------------------------------------------------- */
-function startQuiz(){
-  currentIndex = 0;
-  roundGems = 0;
-  correctCount = 0;
-  totalGems = getTotalGems();
-  gemCountEl.textContent = totalGems;
-
-  gateScreen.classList.add("hidden");
-  resultScreen.classList.add("hidden");
-  quizScreen.classList.remove("hidden");
-
-  showQuestion();
-}
-
-function showQuestion(){
-  answered = false;
-  feedback.textContent = "";
-  feedback.className = "feedback";
-  warningLabel.classList.remove("show");
-
-  const total = QUESTIONS.length;
-  const item = QUESTIONS[currentIndex];
-
-  qIndexLabel.textContent = `سؤال ${currentIndex+1} / ${total}`;
-  progressFill.style.width = `${((currentIndex)/total)*100}%`;
-  questionText.textContent = item.q;
-
-  optionsWrap.innerHTML = "";
-  item.options.forEach((opt, i)=>{
-    const btn = document.createElement("button");
-    btn.className = "option";
-    btn.textContent = opt;
-    btn.addEventListener("click", ()=> selectAnswer(i));
-    optionsWrap.appendChild(btn);
-  });
-
-  startTimer();
-}
-
-function startTimer(){
-  clearInterval(timerInterval);
-  timeLeft = TIME_PER_QUESTION;
-  timerText.textContent = timeLeft;
-  timerText.classList.remove("warning");
-
-  timerInterval = setInterval(()=>{
-    timeLeft--;
-    timerText.textContent = timeLeft;
-
-    if(timeLeft <= WARNING_AT && timeLeft > 0){
-      timerText.classList.add("warning");
-      warningLabel.classList.add("show");
+function renderRegister(){
+  app.innerHTML = `
+    <h1 class="logo"><span class="neon-red">RE</span><span class="neon-blue">LOAD</span></h1>
+    <div class="subtitle">مسابقة المعلومات العامة</div>
+    <div class="center-text">اكتب اسمك للبدء</div>
+    <input type="text" id="nameInput" placeholder="اسمك هنا">
+    <div class="error-msg" id="regError"></div>
+    <button id="startBtn">ابدأ المسابقة</button>
+  `;
+  document.getElementById('startBtn').onclick = () => {
+    const val = document.getElementById('nameInput').value.trim();
+    if (!val) {
+      document.getElementById('regError').textContent = 'من فضلك اكتب اسمك أولاً';
+      return;
     }
-    if(timeLeft <= 0){
-      clearInterval(timerInterval);
-      if(!answered) selectAnswer(-1); // وقت خلص من غير إجابة
+    state.name = val;
+    state.phase = 'quiz1';
+    state.idx = 0;
+    state.score = 0;
+    saveState();
+    render();
+  };
+}
+
+function renderQuiz(bank, phaseKey){
+  const total = bank.length;
+  const i = state.idx;
+  if (i >= total) {
+    if (phaseKey === 'quiz1') {
+      state.phase = 'password';
+      state.score1 = state.score;
+    } else {
+      state.phase = 'finished';
     }
-  }, 1000);
-}
+    saveState();
+    render();
+    return;
+  }
+  const item = bank[i];
+  const { choices: shuffledChoices, correctIndex } = getShuffledChoices(item);
+  const pct = Math.round((i/total)*100);
+  const roundLabel = phaseKey === 'quiz1' ? 'الجولة الأولى' : 'الجولة الثانية';
 
-function selectAnswer(choiceIndex){
-  if(answered) return;
-  answered = true;
-  clearInterval(timerInterval);
+  app.innerHTML = `
+    <div class="top-row">
+      <span class="name-tag">👤 ${escapeHtml(state.name)}</span>
+      <span class="badge">${roundLabel}</span>
+    </div>
+    <h1 class="logo" style="font-size:1.6em;">RELOAD</h1>
+    <div class="progress-wrap">
+      <span>السؤال ${i+1} من ${total}</span>
+      <span>النقاط: ${state.score}</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+    <div class="question-box">${escapeHtml(item.q)}</div>
+    <div id="choices"></div>
+  `;
 
-  const item = QUESTIONS[currentIndex];
-  const options = optionsWrap.querySelectorAll(".option");
-  options.forEach((btn, i)=>{
-    btn.disabled = true;
-    if(i === item.correct) btn.classList.add("correct");
-    else if(i === choiceIndex) btn.classList.add("wrong");
+  const choicesDiv = document.getElementById('choices');
+  shuffledChoices.forEach((choiceText, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = choiceText;
+    btn.onclick = () => handleAnswer(idx, correctIndex, bank, phaseKey);
+    choicesDiv.appendChild(btn);
   });
+}
 
-  if(choiceIndex === item.correct){
-    correctCount++;
-    roundGems += GEMS_PER_CORRECT;
-    totalGems += GEMS_PER_CORRECT;
-    saveTotalGems(totalGems);
-    gemCountEl.textContent = totalGems;
-    feedback.textContent = `إجابة صح! +${GEMS_PER_CORRECT} جوهرة 💎`;
-    feedback.className = "feedback gain";
-  } else if(choiceIndex === -1){
-    feedback.textContent = "خلص الوقت ⏰";
-    feedback.className = "feedback miss";
+function handleAnswer(chosenIdx, correctIndex, bank, phaseKey){
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.classList.add('disabled'));
+  buttons[correctIndex].classList.add('correct');
+  if (chosenIdx !== correctIndex) {
+    buttons[chosenIdx].classList.add('wrong');
   } else {
-    feedback.textContent = "إجابة غلط";
-    feedback.className = "feedback miss";
+    state.score += 1;
   }
-
-  setTimeout(nextQuestion, 1400);
+  setTimeout(() => {
+    state.idx += 1;
+    saveState();
+    render();
+  }, 900);
 }
 
-function nextQuestion(){
-  currentIndex++;
-  if(currentIndex >= QUESTIONS.length){
-    showResults();
-  } else {
-    showQuestion();
-  }
+function renderPassword(){
+  app.innerHTML = `
+    <h1 class="logo" style="font-size:1.8em;">RELOAD</h1>
+    <div class="center-text">
+      أحسنت يا ${escapeHtml(state.name)} 🎉<br>
+      أنهيت الجولة الأولى بـ <span class="neon-blue">${state.score}</span> من 20 نقطة.
+    </div>
+    <div class="center-text">لفتح الجولة الثانية، اكتب كلمة السر:</div>
+    <input type="password" id="passInput" placeholder="كلمة السر">
+    <div class="error-msg" id="passError"></div>
+    <button id="unlockBtn" class="blue">فتح الجولة الثانية</button>
+  `;
+  document.getElementById('unlockBtn').onclick = () => {
+    const val = document.getElementById('passInput').value.trim();
+    if (val === PASSWORD) {
+      state.phase = 'quiz2';
+      state.idx = 0;
+      saveState();
+      render();
+    } else {
+      document.getElementById('passError').textContent = 'كلمة السر غير صحيحة، حاول مرة أخرى';
+    }
+  };
 }
 
-function showResults(){
-  quizScreen.classList.add("hidden");
-  resultScreen.classList.remove("hidden");
-  progressFill.style.width = "100%";
-
-  finalCorrect.textContent = `${correctCount} / ${QUESTIONS.length}`;
-  finalGemsRound.textContent = roundGems;
-  finalGemsTotal.textContent = totalGems;
+function renderFinished(){
+  const score1 = state.score1 || 0;
+  const score2 = state.score - score1;
+  const total = state.score;
+  app.innerHTML = `
+    <h1 class="logo" style="font-size:1.8em;">RELOAD</h1>
+    <div class="center-text">أنهى المسابقة: <b>${escapeHtml(state.name)}</b></div>
+    <div class="score-big">${total} / 40</div>
+    <div class="center-text">
+      الجولة الأولى: <span class="neon-red">${score1}</span> / 20 &nbsp;|&nbsp;
+      الجولة الثانية: <span class="neon-blue">${score2}</span> / 20
+    </div>
+    <div class="center-text">شكراً لمشاركتك في RELOAD! 🎉</div>
+    <div class="hint">إذا خرجت ودخلت مرة أخرى سيُطلب منك كلمة السر مجدداً.</div>
+  `;
 }
 
-restartBtn.addEventListener("click", ()=>{
-  resultScreen.classList.add("hidden");
-  gateScreen.classList.remove("hidden");
-  passwordInput.value = "";
-  gateMsg.textContent = "";
-});
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+loadState();
 </script>
 </body>
 </html>
